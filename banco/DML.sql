@@ -12,3 +12,6 @@ insert into status_contrato(nome) values ('Pago','Em andamento','REP','Cancelado
 
 
 insert into usuario(login,senha,ativo,admin, perfil_id) values ('moniqueluiza','mon2812',1,1,1);
+
+insert into perfil(nome) values ('Admin'),('Gerente'),('Funcionario'),('Supervisor'); 
+insert into usuario(login,senha,ativo,admin, perfil_id) values ('moniqueluiza','mon2812',1,1,1);

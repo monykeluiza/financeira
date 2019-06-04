@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.financeira.entities.TipoLembrete;
 
-public interface ITipoLembrete {
+public interface ITipoLembreteDao {
 	
 	public TipoLembrete save(TipoLembrete tipoLembrete);
 	

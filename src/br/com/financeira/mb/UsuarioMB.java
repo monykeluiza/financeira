@@ -11,8 +11,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.primefaces.PrimeFaces;
-
 import br.com.financeira.entities.Usuario;
 import br.com.financeira.services.UsuarioService;
 import br.com.financeira.utils.JsfUtil;
