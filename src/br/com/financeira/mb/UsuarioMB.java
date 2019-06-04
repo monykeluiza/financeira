@@ -1,5 +1,6 @@
 package br.com.financeira.mb;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,9 @@ import br.com.financeira.utils.JsfUtil;
 
 @ManagedBean(name="clienteMB")
 @ViewScoped
-public class UsuarioMB {
+public class UsuarioMB implements Serializable{
 	
+	private static final long serialVersionUID = -8451286990814492929L;
 	private Usuario usuario;
 	private List<Usuario> listaUsuarios;
 	@Inject
@@ -28,16 +30,16 @@ public class UsuarioMB {
 	
 	@PostConstruct
 	public void init() {
-		listaUsuarios = new ArrayList<Usuario>();
-		carregarLista();
 		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
+		listaUsuarios = new ArrayList<Usuario>();
 		usuario = new Usuario();
+		carregarLista();
 	}
 	
 	public void carregarLista() {
 		listaUsuarios = service.findAll();
-		PrimeFaces.current().ajax().update("usuariopesqform:grid");
+//		PrimeFaces.current().ajax().update("usuariopesqform:grid");
 	}
 	
 	public void ativar(Usuario usuario) {

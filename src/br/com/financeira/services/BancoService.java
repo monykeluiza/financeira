@@ -6,20 +6,28 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import br.com.financeira.entities.Banco;
+import br.com.financeira.entities.Log;
+import br.com.financeira.entities.Usuario;
 import br.com.financeira.persist.ifs.IBancoDao;
 
 @Stateless
-public class BancoService {
+public class BancoService extends LogService {
 	
 	@Inject
 	private IBancoDao bancoDao;
 	
-	public Banco save(Banco banco) {
-		return bancoDao.save(banco);
+	public Banco save(Banco banco, Usuario usuarioLogado) {
+		Banco result =  bancoDao.save(banco);
+		Log log = createLog(ACAO_INSERT, result.getId(), usuarioLogado, "Banco");
+		salvar(log);
+		return result;	
 	}
 	
-	public Banco update(Banco banco) {
-		return bancoDao.update(banco);
+	public Banco update(Banco banco, Usuario usuarioLogado) {
+		Banco result = bancoDao.update(banco);
+		Log log = createLog(ACAO_UPDATE, result.getId(), usuarioLogado, "Banco");
+		salvar(log);
+		return result;
 	}
 	
 	public Banco findById(Banco banco) {

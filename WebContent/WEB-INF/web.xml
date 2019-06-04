@@ -6,7 +6,7 @@
   </welcome-file-list>
   <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>trontastic</param-value>
+    <param-value>south-street</param-value>
   </context-param>
   <context-param>
     <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>

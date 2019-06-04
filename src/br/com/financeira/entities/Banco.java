@@ -67,6 +67,8 @@ public class Banco implements Serializable {
     private String email;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "bancoId")
     private List<Contrato> contratoList;
+    @Column(name = "ativo")
+    private boolean ativo;
 
     public Banco() {
     }
@@ -162,5 +164,13 @@ public class Banco implements Serializable {
     public String toString() {
         return "entidades_financeira.Banco[ id=" + id + " ]";
     }
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
     
 }

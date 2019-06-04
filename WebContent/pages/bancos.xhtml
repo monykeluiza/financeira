@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/pages/template.xhtml">  
+      	<ui:define name="centro">
+      		<h:form id="bancopesqform">
+      			<p:growl id="msg" redisplay="false"  autoUpdate="true"  />
+      			<h:panelGrid cellpadding="10">
+						<p:dataTable var="banco" value="#{bancoMb.listaBancos}" 
+						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
+                          widgetVar="grid" emptyMessage="Nenhum registro cadastrado." style="width: 1200px;" >
+                         		<p:column headerText="Nome" filterMatchMode="contains" filterBy="#{banco.nome}" sortBy="#{banco.nome}">
+						        	<h:outputText value="#{banco.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Sigla" filterMatchMode="contains" filterBy="#{banco.sigla}" sortBy="#{banco.sigla}">
+						        	<h:outputText value="#{banco.sigla}" />
+						    	</p:column>
+						    	<p:column headerText="Contato" filterMatchMode="contains" filterBy="#{banco.nomeContato}" sortBy="#{banco.nomeContato}">
+						        	<h:outputText value="#{banco.nomeContato}" />
+						    	</p:column>
+						    	<p:column headerText="Telefone(s)">
+						        	<h:outputText value="#{banco.telefones}" />
+						    	</p:column>
+						    	<p:column headerText="E-mail">
+						        	<h:outputText value="#{banco.email}" />
+						    	</p:column>
+						    	<p:column headerText="Ativo">
+						        	<h:outputText value="#{banco.ativo ? 'SIM':'NÃO'}" />
+						    	</p:column>
+						    	<p:column style="width: 150px;" headerText="Ação">
+									<p:commandButton style="background: #68AFCE;" icon="fa fa fa-check-circle" rendered="${!banco.ativo}" title="Ativar banco." actionListener="#{bancoMb.ativar(banco)}" update="bancopesqform:msg bancopesqform:grid"  />
+									<p:commandButton style="background: #CE6868;" icon="fa fa fa-ban" rendered="${banco.ativo}"  title="Desativar banco." actionListener="#{bancoMb.desativar(banco)}"  update="bancopesqform:msg bancopesqform:grid"/>
+									<p:commandButton style="background: #14331D;" 
+										icon="fa fa fa-edit" title="Editar dados do banco"
+										oncomplete="PF('bancoDialog').show();" update="bancoDialog"
+										actionListener="#{bancoMb.prepararEditar(banco)}" />
+								</p:column>
+                         </p:dataTable>
+            	</h:panelGrid> 
+            	<h:panelGrid>
+            		<p:commandButton value="Novo Banco" icon="fa fa fa-plus" title="Cadastrar novo banco" oncomplete="PF('bancoDialog').show();" update="bancoDialog" actionListener="#{bancoMb.limpar}" />
+            	</h:panelGrid>
+				</h:form>
+				
+				<p:dialog id="bancoDialog" widgetVar="bancoDialog" header="Cadastrar novo banco" modal="true" appendTo="@(body)" >
+     				<h:form id="bancocadastroform">
+     				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
+     					<p:outputLabel>Nome:</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Nome é de preenchimento obrigatório!" value="#{bancoMb.banco.nome}"/>
+				     	<p:outputLabel>Sigla:</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" value="#{bancoMb.banco.sigla}"/>
+				     	<p:outputLabel>Nome Do Contato:</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" />
+				     	<p:outputLabel>Telefone(s):</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Telefone(s) do Contato é de preenchimento obrigatório!" value="#{bancoMb.banco.telefones}"/>
+				     	<p:outputLabel>E-mail:</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" />
+				    </h:panelGrid> 
+				    <p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{bancoMb.saveOrUpdate}" update=":bancopesqform:msg :bancopesqform:grid" />
+				   </h:form>
+     			</p:dialog>     			
+        </ui:define>
+</ui:composition>
