@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+ <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="icon" href="#{request.contextPath}/resources/imagens/favicon.ico" type="image/x-icon"/>
+		<link rel="shortcut icon" href="#{request.contextPath}/resources/imagens/favicon.ico" type="image/x-icon"/>
+		<h:outputStylesheet library="css" name="login.css" rendered="#{!autenticacaoMb.renderUsuarioLogado}"/>
+        <title>Sistema de Administração de Financeiras</title>
+        <style type="text/css">
+            body {background-color: #eeeeee; font-size: 12px}
+        </style>
+        <script  type="text/javascript">
+        	PrimeFaces.locales['pt_BR'] = {
+	                closeText : 'Fechar',
+	                prevText : 'Anterior',
+	                nextText : 'Pr\u00F3ximo',
+	                currentText : 'Come\u00E7o',
+	                monthNames : [ 'Janeiro', 'Fevereiro', 'Mar\u00E7o', 'Abril',
+	                        'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro',
+	                        'Outubro', 'Novembro', 'Dezembro' ],
+	                monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+	                        'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+	                dayNames : [ 'Domingo', 'Segunda', 'Ter\u00E7a', 'Quarta',
+	                        'Quinta', 'Sexta', 'S\u00E1bado' ],
+	                dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex',
+	                        'Sáb' ],
+	                dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+	                weekHeader : 'Semana',
+	                firstDay : 1,
+	                isRTL : false,
+	                showMonthAfterYear : false,
+	                yearSuffix : '',
+	                timeOnlyTitle : 'S\u00F3 Horas',
+	                timeText : 'Tempo',
+	                hourText : 'Hora',
+	                minuteText : 'Minuto',
+	                secondText : 'Segundo',
+	                currentText : 'Data Atual',
+	                ampm : false,
+	                month : 'M\u00EAs',
+	                week : 'Semana',
+	                day : 'Dia',
+	                allDayText : 'Todo Dia'
+	            };
+        </script>
+    </h:head>
+    <h:body>
+    
+        <div align="center" >
+            <p:layout fullPage="true">  
+            	<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+				    <h:graphicImage library="imagens" name="indicator.gif" />
+				</p:dialog>
+				<p:confirmDialog global="true" width="300px">
+        			<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        			<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    		</p:confirmDialog>
+                <p:layoutUnit position="center" rendered="#{autenticacaoMb.renderUsuarioLogado}">
+                		<div id="menu"> <ui:include src="menu.xhtml"/></div>
+                    	<div id="content"> <ui:insert name="centro"></ui:insert> </div>
+                </p:layoutUnit> 
+                
+                
+                <p:layoutUnit position="center" rendered="#{!autenticacaoMb.renderUsuarioLogado}">
+                   <ui:insert name="login"></ui:insert>
+                </p:layoutUnit>
+                
+                 <p:layoutUnit position="south" rendered="#{!autenticacaoMb.renderUsuarioLogado}" size="70">
+                	<ui:insert name="rodape"  >
+	                    	<font size="1"> Desenvolvido por Monique Dantas.<br/> Tel: (71) 9 9960.7377 <br/> E-mail: monykeluiza@gmail.com </font>
+                    </ui:insert>
+                   </p:layoutUnit>
+                   
+              </p:layout>
+        </div>
+    </h:body> 
+</html>

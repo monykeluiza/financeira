@@ -1,0 +1,35 @@
+form{
+	position:relative;
+	width: 260px;
+	height: 240px;
+	margin-top: 90px;
+	margin-left: 272px;
+}
+#CentralizaSite {
+	background-repeat:no-repeat;
+	background-image:url(../resources/imagens/box_Login.png);
+	width: 601px;
+	height: 302px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	margin: -188px 0 0 -300px;
+	left:50%;
+	top:50%;
+}
+#Logo{
+	background-repeat:no-repeat;
+	background-image:url(../resources/imagens/financeira.jpg);
+	background-size: 196px 146px;
+	height:152px;
+	width:250px;
+	position:relative;
+	margin-top: 60px;
+	margin-left: 59px;
+	float: left;
+}
+
+.buttonLoginClass {   
+     font-size: 12px;
+     font-weight: bold;
+       }

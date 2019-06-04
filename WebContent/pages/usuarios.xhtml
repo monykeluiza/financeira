@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/pages/template.xhtml">  
+      	<ui:define name="centro">
+      		<h:form id="usuariopesqform">
+      			<p:growl id="msg" redisplay="false"  autoUpdate="true"  />
+	        	<h:panelGrid cellpadding="10">
+						<p:dataTable var="usuario" value="#{usuarioMb.listaUsuarios}" 
+						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
+                          widgetVar="grid" emptyMessage="Nenhum registro cadastrado." style="width: 1200px;" >
+						    	<p:column headerText="Login" style="width: 80px;" filterMatchMode="contains" filterBy="#{usuario.login}" sortBy="#{usuario.login}">
+						        	<h:outputText value="#{usuario.login}" />
+						    	</p:column>
+						    	<p:column headerText="Último Acesso" style="width: 60px;">
+						        	<h:outputText value="#{usuario.dataUltimoAcesso}" >
+						        		<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"  />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Ativo" style="width: 90px;" filterMatchMode="contains" filterBy="#{usuario.ativo}" sortBy="#{usuario.ativo}">
+						        	<h:outputText value="#{usuario.ativo ? 'SIM':'NÃO'}" />
+						    	</p:column>
+						    	<p:column headerText="Admin" style="width: 90px;" filterMatchMode="contains" filterBy="#{usuario.admin}" sortBy="#{usuario.admin}">
+						        	<h:outputText value="#{usuario.admin ? 'SIM':'NÃO'}" />
+						    	</p:column>
+						    	<p:column headerText="Perfil" style="width: 90px;" filterMatchMode="contains" filterBy="#{usuario.perfilId.nome}" sortBy="#{usuario.perfilId.nome}">
+						        	<h:outputText value="#{usuario.perfilId.nome}" />
+						    	</p:column>
+						    	<p:column style="width: 250px;" headerText="Ação">
+									<p:commandButton style="background: #68AFCE;" value="Ativar"    icon="ui-icon-circle-check" rendered="${!usuario.ativo}" title="Ativar usuário." actionListener="#{usuarioMb.ativar(usuario)}" update="usuariopesqform:msg usuariopesqform:grid"  />
+									<p:commandButton style="background: #CE6868;" value="Desativar" icon="ui-icon-circle-close" rendered="${usuario.ativo}"  title="Desativar usuário." actionListener="#{usuarioMb.desativar(usuario)}"  update="usuariopesqform:msg usuariopesqform:grid"/>
+									<p:commandButton style="background: #68ce8c;" value="Admin"    icon="ui-icon-circle-check" rendered="${!usuario.admin}" title="Tornar usuário administrador do campus ou reitoria." actionListener="#{usuarioMb.tornarAdmin(usuario)}" update="usuariopesqform:msg usuariopesqform:grid"  />
+									<p:commandButton style="background: #0d752d;" value="Remover Admin"    icon="ui-icon-circle-close" rendered="${usuario.admin}" title="Retirar usuário como administrador do campus ou reitoria." actionListener="#{usuarioMb.retirarAdmin(usuario)}" update="usuariopesqform:msg usuariopesqform:grid"  />
+								</p:column>
+                         </p:dataTable>
+            	</h:panelGrid>   
+		    </h:form>
+		   	<p:dialog id="usuarioDialog" widgetVar="usuarioDialog" header="Novo Usuário" modal="true" appendTo="@(body)" >
+     				<h:form id="usuariocadastroform">
+     				<p:outputLabel value="*Atenção! Todos os campos são obrigatórios." style="color: red;" />
+     				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
+				     	<p:outputLabel>Administrador:</p:outputLabel>
+				     	<p:selectOneRadio id="administrador" value="#{usuarioMb.usuario.admin}" required="true" requiredMessage="O campo Administrador é de preenchimento obrigatório!">
+				            <f:selectItem itemLabel="Sim" itemValue="true" />
+				            <f:selectItem itemLabel="Não" itemValue="false" />
+       					</p:selectOneRadio>
+				     	<p:outputLabel>Nome:</p:outputLabel>
+				     	<p:inputText size="50" required="true" requiredMessage="O campo Nome é de preenchimento obrigatório!" value="#{usuarioMb.usuario.nome}"/>
+				     	<p:outputLabel>E-mail:</p:outputLabel>
+				     	<p:inputText size="50" required="true" requiredMessage="O campo E-mail é de preenchimento obrigatório!" value="#{usuarioMb.usuario.email}" validatorMessage="E-mail Inválido! Digite um e-mail válido para cadastro de usuário">
+				     		<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+				     	</p:inputText>
+				     	<p:outputLabel>Login:</p:outputLabel>
+				     	<p:inputText size="50" required="true" requiredMessage="O campo Login é de preenchimento obrigatório!" value="#{usuarioMb.usuario.login}"/>
+				     </h:panelGrid>
+						<p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{usuarioMb.cadastrar}" update=":usuariopesqform:msg :usuariopesqform:grid" />
+				     </h:form>
+     			</p:dialog>
+        </ui:define>
+</ui:composition>

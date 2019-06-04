@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets" >
+
+<h:form rendered="#{autenticacaoMb.renderUsuarioLogado}">  
+    <p:growl id="messages"/>
+    <p:menubar>
+        <p:menuitem value="Home" icon="fa fa fa-home" action="/pages/home.xhtml"  />
+       	<p:menuitem value="Clientes" icon="fa fa fa-address-book" action="/pages/clientes.xhtml" rendered="#{autenticacaoMb.renderUsuarioLogadoAdmin}"  />
+       	<p:menuitem value="Contratos" icon="fa fa fa-handshake-o" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Planilha de Produção" icon="fa fa fa-table" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Lembretes" icon="fa fa fa-calendar-check-o" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Funcionários" icon="fa fa fa-user-circle" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Metas" icon="fa fa fa-tasks" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Usuários" icon="fa fa fa-users" action="/pages/usuarios.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Tipos de Documento" icon="fa fa fa-file-text-o" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Tipos de Operação" icon="fa fa  fa-cog" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Tipos de Lembrete" icon="fa fa fa-list-ul" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+        <f:facet name="options">
+        	<p:outputLabel value="Bem-vindo(a), #{autenticacaoMb.usuario.login}" rendered="#{autenticacaoMb.renderUsuarioLogado}" style="margin-right: 10px;"  />
+            <p:commandButton value="SAIR" icon="ui-icon-extlink"  action="#{autenticacaoMb.doLogout}"  />
+        </f:facet>
+    </p:menubar>
+</h:form>
+</ui:composition>

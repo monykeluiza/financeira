@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/pages/template.xhtml">
+      	<ui:define name="login">
+      		<div id="CentralizaSite">
+			<f:view transient="true">
+			<div id="Logo"> </div>
+	      		<h:form>
+	      			  	<p:growl id="msg" redisplay="false"  autoUpdate="true"  />
+		      		<h:panelGrid columns="2">
+		        		<p:outputLabel>Usuário</p:outputLabel>
+		        		<p:inputText value="#{autenticacaoMb.usuario.login}" required="true" requiredMessage="Informe o login."/>
+		        		<p:outputLabel>Senha</p:outputLabel>
+		        		<p:password value="#{autenticacaoMb.usuario.senha}" maxlength="50" required="true" requiredMessage="Informe a senha."/>
+		        		<p:outputLabel/>
+		        	</h:panelGrid>
+		        	<h:panelGrid columns="1">
+		        		<p:commandButton value="ACESSAR" update="msg" action="#{autenticacaoMb.autenticar}" icon="fa fa fa-sign-in"  style="float: right;"   />
+		        	</h:panelGrid>
+			        </h:form>
+			       </f:view>
+			</div>
+        </ui:define>
+</ui:composition>
