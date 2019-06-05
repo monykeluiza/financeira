@@ -18,9 +18,9 @@
        	<p:menuitem value="Metas" icon="fa fa fa-tasks" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Usuários" icon="fa fa fa-users" action="/pages/usuarios.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Bancos" icon="fa fa fa-university" action="/pages/bancos.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
-       	<p:menuitem value="Tipos de Documento" icon="fa fa fa-file-text-o" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
-       	<p:menuitem value="Tipos de Operação" icon="fa fa  fa-cog" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
-       	<p:menuitem value="Tipos de Lembrete" icon="fa fa fa-list-ul" action="/pages/tipoLembrete.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Tipos de Documento" icon="fa fa fa-file-text-o" action="/pages/tipodocumento.xhtml" />
+       	<p:menuitem value="Tipos de Operação" icon="fa fa  fa-cog" action="/pages/tipooperacao.xhtml"  />
+       	<p:menuitem value="Tipos de Lembrete" icon="fa fa fa-list-ul" action="/pages/tipoLembrete.xhtml" />
         <f:facet name="options">
         	<p:outputLabel value="Bem-vindo(a), #{autenticacaoMb.usuario.login}" rendered="#{autenticacaoMb.renderUsuarioLogado}" style="margin-right: 10px;"  />
             <p:commandButton value="SAIR" icon="ui-icon-extlink"  action="#{autenticacaoMb.doLogout}"  />

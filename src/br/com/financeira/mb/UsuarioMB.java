@@ -11,11 +11,12 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.financeira.entities.Perfil;
 import br.com.financeira.entities.Usuario;
 import br.com.financeira.services.UsuarioService;
 import br.com.financeira.utils.JsfUtil;
 
-@ManagedBean(name="clienteMB")
+@ManagedBean(name="usuarioMb")
 @ViewScoped
 public class UsuarioMB implements Serializable{
 	
@@ -62,6 +63,14 @@ public class UsuarioMB implements Serializable{
 		usuario.setAdmin(false);
 		usuario = service.update(usuario, usuarioLogado);
 		JsfUtil.addSuccessMessage("Usuário retirado de administrador com sucesso!");
+	}
+	
+	public void mudarPerfil(Usuario user, Integer idPerfil) {
+		Perfil perfil = new Perfil(idPerfil);
+		user.setPerfilId(perfil);
+		user = service.update(user, usuarioLogado);
+		carregarLista();
+		JsfUtil.addSuccessMessage("Modificado o perfil do usuário com sucesso!");
 	}
 	
 	public void cadastrar() {

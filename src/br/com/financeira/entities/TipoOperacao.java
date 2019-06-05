@@ -48,6 +48,8 @@ public class TipoOperacao implements Serializable {
     private String nome;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoOperacaoId")
     private List<Contrato> contratoList;
+    @Column(name = "ativo")
+    private boolean ativo;
 
     public TipoOperacao() {
     }
@@ -110,5 +112,13 @@ public class TipoOperacao implements Serializable {
     public String toString() {
         return "entidades_financeira.TipoOperacao[ id=" + id + " ]";
     }
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
     
 }

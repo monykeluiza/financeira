@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import br.com.financeira.entities.Cliente;
 import br.com.financeira.entities.Perfil;
 import br.com.financeira.entities.Usuario;
+import br.com.financeira.services.ClienteService;
+import br.com.financeira.utils.JsfUtil;
 
 @ManagedBean(name="clienteMB")
 @ViewScoped
@@ -23,6 +25,8 @@ public class ClienteMB {
 	
 	private Usuario usuarioLogado;
 	
+	private ClienteService service;
+	
 	@PostConstruct
 	public void init() {
 		try {
@@ -32,26 +36,49 @@ public class ClienteMB {
 			}
 			listaClientes = new ArrayList<Cliente>();
 			cliente = new Cliente();
+			carregarLista();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void carregarListaClientes() {
-		if (usuarioLogado.getAdmin() || usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_GERENTE)) {
-			// carregar tudo
+	public void carregarLista() {
+		if (usuarioLogado.getAdmin() || usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_ADMIN)) {
+			listaClientes = service.findAll();
 		} else {
-			if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_FUNCIONARIO)) {
-				// CARREGAR SO OS CLIENTES DELE
-			} else if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_SUPERVISOR)) {
-				// carregar os clientes dele e seus subordinados
-			}
+			if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_GERENTE) || usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_SUPERVISOR)) {
+				listaClientes = service.findByFuncionarios(usuarioLogado.getFuncionarioList().get(0).getFuncionarioList());
+			} else if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_FUNCIONARIO)) {
+				listaClientes = service.findByFuncionario(usuarioLogado.getFuncionarioList().get(0));
+			} 
 		}
 	}
 	
+	public void saveOrUpdate() {
+		try {
+			if (cliente.getId() == null) {
+				cliente = service.save(cliente, usuarioLogado);
+				JsfUtil.addSuccessMessage("Cliente cadastrado com sucesso.");
+				carregarLista();
+			} else {
+				cliente = service.update(cliente, usuarioLogado);
+				JsfUtil.addSuccessMessage("Cliente atualizado com sucesso.");
+				carregarLista();
+			}
+			JsfUtil.closeModal("clienteDialog");
+		} catch (Exception e) {
+			JsfUtil.addErrorMessage(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	
+	public void prepararEditar(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	
-	
+	public void limpar() {
+		cliente = new Cliente();
+	}
 
 	public List<Cliente> getListaClientes() {
 		return listaClientes;

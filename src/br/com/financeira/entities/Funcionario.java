@@ -49,6 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Funcionario.findByEndereco", query = "SELECT f FROM Funcionario f WHERE f.endereco = :endereco"),
     @NamedQuery(name = "Funcionario.findByDataNascimento", query = "SELECT f FROM Funcionario f WHERE f.dataNascimento = :dataNascimento"),
     @NamedQuery(name = "Funcionario.findByDataInicio", query = "SELECT f FROM Funcionario f WHERE f.dataInicio = :dataInicio"),
+    @NamedQuery(name = "Funcionario.findByChefe", query = "SELECT f FROM Funcionario f WHERE f.chefiaId.id = :chefeId"),
+    @NamedQuery(name = "Funcionario.findChefes", query = "SELECT f FROM Funcionario f WHERE f.chefiaId = null"),
+    @NamedQuery(name = "Funcionario.findByUsuario", query = "SELECT f FROM Funcionario f WHERE f.usuarioId.id = :usuarioId"),
     @NamedQuery(name = "Funcionario.findByDataSaida", query = "SELECT f FROM Funcionario f WHERE f.dataSaida = :dataSaida")})
 public class Funcionario implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -306,5 +309,13 @@ public class Funcionario implements Serializable {
     public String toString() {
         return "entidades_financeira.Funcionario[ id=" + id + " ]";
     }
+
+	public List<Funcionario> getFuncionarioList() {
+		return funcionarioList;
+	}
+
+	public void setFuncionarioList(List<Funcionario> funcionarioList) {
+		this.funcionarioList = funcionarioList;
+	}
     
 }
