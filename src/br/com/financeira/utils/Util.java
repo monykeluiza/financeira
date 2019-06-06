@@ -1,5 +1,8 @@
 package br.com.financeira.utils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 
 public class Util {
@@ -102,6 +105,12 @@ public class Util {
 			return "vigésima";
 		}
 		return "vigésima primeira";
+	}
+	
+	public static String getMD5String(String value) throws NoSuchAlgorithmException {
+		MessageDigest m = MessageDigest.getInstance("MD5");
+		m.update(value.getBytes(),0,value.length());
+		return (new BigInteger(1,m.digest()).toString(16));
 	}
 
 }

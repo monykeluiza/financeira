@@ -67,8 +67,16 @@ CREATE TABLE IF NOT EXISTS `meta` (
   `batida` TINYINT(1) NOT NULL DEFAULT 0,
   `data_alcance` DATE NULL,
   `data_vencimento` DATE NOT NULL,
-  PRIMARY KEY (`id`))
+  `funcionario_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_meta_funcionario1`
+    FOREIGN KEY (`funcionario_id`)
+    REFERENCES `funcionario` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+CREATE INDEX `fk_meta_funcionario1_idx` ON `meta` (`funcionario_id` ASC);
 
 
 -- -----------------------------------------------------
@@ -91,17 +99,11 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   `data_inicio` DATE NOT NULL,
   `data_saida` DATE NULL,
   `usuario_id` INT NOT NULL,
-  `meta_id` INT NULL,
   `chefia_id` INT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_funcionario_usuario1`
     FOREIGN KEY (`usuario_id`)
     REFERENCES `usuario` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_funcionario_meta1`
-    FOREIGN KEY (`meta_id`)
-    REFERENCES `meta` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_funcionario_funcionario1`
@@ -112,8 +114,6 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
 ENGINE = InnoDB;
 
 CREATE INDEX `fk_funcionario_usuario1_idx` ON `funcionario` (`usuario_id` ASC);
-
-CREATE INDEX `fk_funcionario_meta1_idx` ON `funcionario` (`meta_id` ASC);
 
 CREATE INDEX `fk_funcionario_funcionario1_idx` ON `funcionario` (`chefia_id` ASC);
 

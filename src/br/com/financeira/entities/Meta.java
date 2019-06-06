@@ -8,23 +8,23 @@ package br.com.financeira.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -72,9 +72,10 @@ public class Meta implements Serializable {
     @Column(name = "data_vencimento")
     @Temporal(TemporalType.DATE)
     private Date dataVencimento;
-    @OneToMany(mappedBy = "metaId")
-    private List<Funcionario> funcionarioList;
-
+    @JoinColumn(name = "funcionario_id", referencedColumnName = "id")
+    @ManyToOne
+    private Funcionario funcionarioId;
+    
     public Meta() {
     }
 
@@ -145,15 +146,6 @@ public class Meta implements Serializable {
         this.dataVencimento = dataVencimento;
     }
 
-    @XmlTransient
-    public List<Funcionario> getFuncionarioList() {
-        return funcionarioList;
-    }
-
-    public void setFuncionarioList(List<Funcionario> funcionarioList) {
-        this.funcionarioList = funcionarioList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -178,5 +170,13 @@ public class Meta implements Serializable {
     public String toString() {
         return "entidades_financeira.Meta[ id=" + id + " ]";
     }
+
+	public Funcionario getFuncionarioId() {
+		return funcionarioId;
+	}
+
+	public void setFuncionarioId(Funcionario funcionarioId) {
+		this.funcionarioId = funcionarioId;
+	}
     
 }

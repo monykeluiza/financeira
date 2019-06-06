@@ -1,5 +1,6 @@
 package br.com.financeira.mb;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.financeira.entities.Cliente;
@@ -15,16 +17,19 @@ import br.com.financeira.entities.Usuario;
 import br.com.financeira.services.ClienteService;
 import br.com.financeira.utils.JsfUtil;
 
-@ManagedBean(name="clienteMB")
+@ManagedBean(name="clienteMb")
 @ViewScoped
-public class ClienteMB {
+public class ClienteMB implements Serializable {
 	
+	private static final long serialVersionUID = -7230516231380620750L;
+
 	private List<Cliente> listaClientes;
 	
 	private Cliente cliente;
 	
 	private Usuario usuarioLogado;
 	
+	@Inject
 	private ClienteService service;
 	
 	@PostConstruct

@@ -31,10 +31,10 @@ public class FuncionarioMB implements Serializable {
 	@PostConstruct
 	public void init() {
 		listaFuncionarios = new ArrayList<Funcionario>();
-		carregarLista();
 		HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
 		funcionario = new Funcionario();
+		carregarLista();
 	}
 	
 	public void carregarLista() {
@@ -47,16 +47,31 @@ public class FuncionarioMB implements Serializable {
 		}
 	}
 	
-	public void cadastrar() {
+	public void saveOrUpdate() {
 		try {
-			funcionario = service.save(funcionario, usuarioLogado);
-			JsfUtil.addSuccessMessage("Funcionário cadastrado com sucesso.");
-			carregarLista();
+			if (funcionario.getId() == null) {
+				funcionario = service.save(funcionario, usuarioLogado);
+				JsfUtil.addSuccessMessage("Funcionario cadastrado com sucesso.");
+				carregarLista();
+			} else {
+				funcionario = service.update(funcionario, usuarioLogado);
+				JsfUtil.addSuccessMessage("Funcionario atualizado com sucesso.");
+				carregarLista();
+			}
 			JsfUtil.closeModal("funcionarioDialog");
 		} catch (Exception e) {
 			JsfUtil.addErrorMessage(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateDataSaida(Funcionario f) {
+		service.desligarFuncionario(f, usuarioLogado);
+		JsfUtil.addSuccessMessage("Funcionario Desligado com sucesso");
+	}
+	
+	public void prepararEditar(Funcionario f) {
+		this.funcionario = f;
 	}
 	
 	public void limpar() {

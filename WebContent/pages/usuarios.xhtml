@@ -14,6 +14,9 @@
 						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
                           widgetVar="grid" emptyMessage="Nenhum registro cadastrado." style="width: 1200px;" >
+                          		<p:column headerText="Nome"  filterMatchMode="contains" filterBy="#{usuario.funcionarioList[0].nome}" sortBy="#{usuario.funcionarioList[0].nome}">
+						        	<h:outputText value="#{usuario.funcionarioList[0].nome}" />
+						    	</p:column>
 						    	<p:column headerText="Login"  filterMatchMode="contains" filterBy="#{usuario.login}" sortBy="#{usuario.login}">
 						        	<h:outputText value="#{usuario.login}" />
 						    	</p:column>

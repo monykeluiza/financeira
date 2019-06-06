@@ -16,8 +16,14 @@ public class FuncionarioService extends LogService {
 	@Inject
 	private IFuncionarioDao dao;
 	
+	@Inject
+	private UsuarioService userService;
+	
 	public Funcionario save(Funcionario funcionario, Usuario usuarioLogado) {
+		funcionario.setChefiaId(null);
+		funcionario.setUsuarioId(userService.criarUsuarioParaFuncionario(funcionario));
 		Funcionario result =  dao.save(funcionario);
+		
 		Log log = createLog(ACAO_INSERT, result.getId(), usuarioLogado, "Funcionario");
 		salvar(log);
 		return result;	
@@ -28,6 +34,12 @@ public class FuncionarioService extends LogService {
 		Log log = createLog(ACAO_UPDATE, result.getId(), usuarioLogado, "Funcionario");
 		salvar(log);
 		return result;
+	}
+	
+	public void desligarFuncionario(Funcionario funcionario, Usuario usuarioLogado) {
+		funcionario.getUsuarioId().setAtivo(false);
+		userService.update(funcionario.getUsuarioId(), usuarioLogado);
+		update(funcionario, usuarioLogado);
 	}
 	
 	public Funcionario findById(Funcionario funcionario) {

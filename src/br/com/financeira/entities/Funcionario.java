@@ -109,9 +109,6 @@ public class Funcionario implements Serializable {
     private List<Contrato> contratoList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "funcionarioId")
     private List<Cliente> clienteList;
-    @JoinColumn(name = "meta_id", referencedColumnName = "id")
-    @ManyToOne
-    private Meta metaId;
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
@@ -119,10 +116,12 @@ public class Funcionario implements Serializable {
     private List<Contato> contatoList;
     @OneToMany(mappedBy = "chefiaId")
     private List<Funcionario> funcionarioList;
+    @OneToMany(mappedBy = "funcionarioId")
+    private List<Meta> metaList;
     @JoinColumn(name = "chefia_id", referencedColumnName = "id")
     @ManyToOne
     private Funcionario chefiaId;
-
+    
     public Funcionario() {
     }
 
@@ -260,14 +259,6 @@ public class Funcionario implements Serializable {
         this.clienteList = clienteList;
     }
 
-    public Meta getMetaId() {
-        return metaId;
-    }
-
-    public void setMetaId(Meta metaId) {
-        this.metaId = metaId;
-    }
-
     public Usuario getUsuarioId() {
         return usuarioId;
     }
@@ -316,6 +307,22 @@ public class Funcionario implements Serializable {
 
 	public void setFuncionarioList(List<Funcionario> funcionarioList) {
 		this.funcionarioList = funcionarioList;
+	}
+
+	public List<Meta> getMetaList() {
+		return metaList;
+	}
+
+	public void setMetaList(List<Meta> metaList) {
+		this.metaList = metaList;
+	}
+
+	public Funcionario getChefiaId() {
+		return chefiaId;
+	}
+
+	public void setChefiaId(Funcionario chefiaId) {
+		this.chefiaId = chefiaId;
 	}
     
 }
