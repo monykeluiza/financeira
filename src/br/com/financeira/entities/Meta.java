@@ -34,13 +34,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "meta")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Meta.findAll", query = "SELECT m FROM Meta m"),
+    @NamedQuery(name = "Meta.findAll", query = "SELECT m FROM Meta m order by m.id desc"),
     @NamedQuery(name = "Meta.findById", query = "SELECT m FROM Meta m WHERE m.id = :id"),
     @NamedQuery(name = "Meta.findByDescricao", query = "SELECT m FROM Meta m WHERE m.descricao = :descricao"),
     @NamedQuery(name = "Meta.findByValor", query = "SELECT m FROM Meta m WHERE m.valor = :valor"),
     @NamedQuery(name = "Meta.findByPeriodicidade", query = "SELECT m FROM Meta m WHERE m.periodicidade = :periodicidade"),
     @NamedQuery(name = "Meta.findByBatida", query = "SELECT m FROM Meta m WHERE m.batida = :batida"),
     @NamedQuery(name = "Meta.findByDataAlcance", query = "SELECT m FROM Meta m WHERE m.dataAlcance = :dataAlcance"),
+    @NamedQuery(name = "Meta.findByFuncionario", query = "SELECT m FROM Meta m WHERE m.funcionarioId.id = :idFuncionario order by m.id desc"),
     @NamedQuery(name = "Meta.findByDataVencimento", query = "SELECT m FROM Meta m WHERE m.dataVencimento = :dataVencimento")})
 public class Meta implements Serializable {
     private static final long serialVersionUID = 1L;
