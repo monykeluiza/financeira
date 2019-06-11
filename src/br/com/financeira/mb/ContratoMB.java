@@ -1,6 +1,7 @@
 package br.com.financeira.mb;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class ContratoMB implements Serializable {
 	private Usuario usuarioLogado;
 	
 	private boolean isFuncionario;
+	
+	private BigDecimal totalValorPago;
+	private BigDecimal totalValorCliente;
+	private BigDecimal totalValorContrato;
 	
 	@Inject
 	private ContratoService service;
@@ -78,6 +83,7 @@ public class ContratoMB implements Serializable {
 				carregarLista();
 			}
 			JsfUtil.closeModal("contratoDialog");
+			JsfUtil.closeModal("pagoDialog");
 		} catch (Exception e) {
 			JsfUtil.addErrorMessage(e.getMessage());
 			e.printStackTrace();
@@ -130,6 +136,44 @@ public class ContratoMB implements Serializable {
 
 	public void setFuncionario(boolean isFuncionario) {
 		this.isFuncionario = isFuncionario;
+	}
+
+	public BigDecimal getTotalValorPago() {
+		totalValorPago = new BigDecimal(0);
+		for (Contrato contrato : listaContratos) {
+			if (contrato.getValorPago() != null) {
+				totalValorPago = totalValorPago.add(contrato.getValorPago());
+			}
+		}
+		return totalValorPago;
+	}
+
+	public void setTotalValorPago(BigDecimal totalValorPago) {
+		this.totalValorPago = totalValorPago;
+	}
+
+	public BigDecimal getTotalValorCliente() {
+		totalValorCliente = new BigDecimal(0);
+		for (Contrato contrato : listaContratos) {
+			totalValorCliente = totalValorCliente.add(contrato.getValorCliente());
+		}
+		return totalValorCliente;
+	}
+
+	public void setTotalValorCliente(BigDecimal totalValorCliente) {
+		this.totalValorCliente = totalValorCliente;
+	}
+
+	public BigDecimal getTotalValorContrato() {
+		totalValorContrato = new BigDecimal(0);
+		for (Contrato contrato : listaContratos) {
+			totalValorContrato = totalValorContrato.add(contrato.getValorContrato());
+		}
+		return totalValorContrato;
+	}
+
+	public void setTotalValorContrato(BigDecimal totalValorContrato) {
+		this.totalValorContrato = totalValorContrato;
 	}
 
 }
