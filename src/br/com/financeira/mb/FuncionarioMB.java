@@ -43,7 +43,9 @@ public class FuncionarioMB implements Serializable {
 		} else {
 			if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_GERENTE) || usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_SUPERVISOR)) {
 				listaFuncionarios = service.findSubordinados(usuarioLogado.getFuncionarioList().get(0));
-			} 
+			} else {
+				listaFuncionarios.add(service.findById(usuarioLogado.getFuncionarioList().get(0)));
+			}
 		}
 	}
 	

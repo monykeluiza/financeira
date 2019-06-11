@@ -11,16 +11,18 @@
     <p:menubar>
         <p:menuitem value="Home" icon="fa fa fa-home" action="/pages/home.xhtml"  />
        	<p:menuitem value="Clientes" icon="fa fa fa-address-book" action="/pages/cliente.xhtml" />
-       	<p:menuitem value="Contratos" icon="fa fa fa-handshake-o" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
-       	<p:menuitem value="Planilha de Produção" icon="fa fa fa-table" action="/pages/livros.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
-       	<p:menuitem value="Lembretes" icon="fa fa fa-calendar-check-o" action="/pages/funcionario.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Contratos" icon="fa fa fa-handshake-o" action="/pages/contrato.xhtml"   />
+       	<p:menuitem value="Planilha de Produção" icon="fa fa fa-table" action="/pages/livros.xhtml" rendered="#{false}"  />
+       	<p:menuitem value="Lembretes" icon="fa fa fa-calendar-check-o" action="/pages/lembrete.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Funcionários" icon="fa fa fa-user-circle" action="/pages/funcionario.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Metas" icon="fa fa fa-tasks" action="/pages/meta.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Usuários" icon="fa fa fa-users" action="/pages/usuarios.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Bancos" icon="fa fa fa-university" action="/pages/bancos.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
-       	<p:menuitem value="Tipos de Documento" icon="fa fa fa-file-text-o" action="/pages/tipodocumento.xhtml" />
-       	<p:menuitem value="Tipos de Operação" icon="fa fa  fa-cog" action="/pages/tipooperacao.xhtml"  />
-       	<p:menuitem value="Tipos de Lembrete" icon="fa fa fa-list-ul" action="/pages/tipoLembrete.xhtml" />
+       	<p:submenu label="Configurações" icon="fa fa fa-wrench" rendered="#{autenticacaoMb.renderUsuarioLogadoAdmin}">
+	       	<p:menuitem value="Tipos de Documento" icon="fa fa fa-file-text-o" action="/pages/tipodocumento.xhtml" />
+	       	<p:menuitem value="Tipos de Operação" icon="fa fa  fa-cog" action="/pages/tipooperacao.xhtml"  />
+	       	<p:menuitem value="Tipos de Lembrete" icon="fa fa fa-list-ul" action="/pages/tipoLembrete.xhtml" />
+	    </p:submenu>
         <f:facet name="options">
         	<p:outputLabel value="Bem-vindo(a), #{autenticacaoMb.usuario.login}" rendered="#{autenticacaoMb.renderUsuarioLogado}" style="margin-right: 10px;"  />
             <p:commandButton value="SAIR" icon="ui-icon-extlink"  action="#{autenticacaoMb.doLogout}"  />

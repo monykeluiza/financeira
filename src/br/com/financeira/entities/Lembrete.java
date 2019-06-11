@@ -123,6 +123,9 @@ public class Lembrete implements Serializable {
     }
 
     public TipoLembrete getTipoLembreteId() {
+    	if (tipoLembreteId == null) {
+    		tipoLembreteId = new TipoLembrete();
+    	}
         return tipoLembreteId;
     }
 
@@ -131,6 +134,9 @@ public class Lembrete implements Serializable {
     }
 
     public Usuario getUsuarioId() {
+    	if (usuarioId == null) {
+    		usuarioId = new Usuario();
+    	}
         return usuarioId;
     }
 

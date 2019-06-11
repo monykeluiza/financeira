@@ -14,11 +14,34 @@
 						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
                           widgetVar="grid" emptyMessage="Nenhum registro cadastrado." style="width: 1300px;" >
-                         		<p:column headerText="descricao" filterMatchMode="contains" filterBy="#{meta.nome}" sortBy="#{meta.nome}" style="width: 150px;">
+                         		<p:column headerText="descricao" filterMatchMode="contains" filterBy="#{meta.nome}" sortBy="#{meta.nome}" >
 						        	<h:outputText value="#{meta.descricao}" />
 						    	</p:column>
-						    	<p:column headerText="Funcionario" style="width: 70px;">
+						    	<p:column headerText="Valor" sortBy="#{meta.nome}" >
+						        	<h:outputText value="#{meta.valor}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Data de Vencimento" sortBy="#{meta.dataVencimento}" >
+						        	<h:outputText value="#{meta.dataVencimento}" >
+						        		<f:convertDateTime pattern="dd/MM/yyyy" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Funcionario" >
 						        	<h:outputText value="#{meta.funcionarioId.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Total Pago" >
+						        	<h:outputText value="#{meta.funcionarioId.totalPago}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Batida">
+						        	<h:outputText value="#{meta.batida?'SIM':'NÃO'}" />
+						    	</p:column>
+						    	<p:column headerText="Data Alcance" >
+						        	<h:outputText value="#{meta.dataAlcance}" >
+						        		<f:convertDateTime pattern="dd/MM/yyyy" />
+						        	</h:outputText>
 						    	</p:column>
 						    	<p:column style="width: 150px;" headerText="Ação">
 									<p:commandButton style="background: #14331D;" 
@@ -37,8 +60,20 @@
 				<p:dialog id="metaDialog" widgetVar="metaDialog" header="Cadastrar novo meta" modal="true" appendTo="@(body)" >
      				<h:form id="metacadastroform">
      				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
-     					<p:outputLabel>Nome:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Nome é de preenchimento obrigatório!" value="#{metaMb.meta.descricao}"/>
+     					<p:outputLabel>Descrição:</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Descrição é de preenchimento obrigatório!" value="#{metaMb.meta.descricao}"/>
+				     	<p:outputLabel>Valor:</p:outputLabel>
+				     	<p:inputNumber decimalPlaces="2" required="true" decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p" requiredMessage="O campo Valor é de preenchimento obrigatório!" value="#{metaMb.meta.valor}"/>
+				     	<p:outputLabel>Data de Vencimento:</p:outputLabel>
+				     	<p:calendar value="#{metaMb.meta.dataVencimento}"
+									navigator="true" mask="true" pattern="dd/MM/yyyy"
+									required="true"
+									requiredMessage="O campo Data de Vencimento é de preechimento obrigatório." />
+						<p:outputLabel>Funcionário:</p:outputLabel>
+				     	<p:selectOneMenu value="#{metaMb.meta.funcionarioId.id}" filter="true" filterMatchMode="contains" effect="fade" >
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItems value="#{funcionarioMb.listaFuncionarios}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome}"/>
+						</p:selectOneMenu>		
 				    </h:panelGrid> 
 				    <p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{metaMb.saveOrUpdate}" update=":metapesqform:msg :metapesqform:grid" />
 				   </h:form>

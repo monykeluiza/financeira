@@ -162,6 +162,9 @@ public class Contrato implements Serializable {
     }
 
     public Banco getBancoId() {
+    	if (bancoId == null) {
+    		bancoId = new Banco();
+    	}
         return bancoId;
     }
 
@@ -170,6 +173,9 @@ public class Contrato implements Serializable {
     }
 
     public Cliente getClienteId() {
+    	if (clienteId == null) {
+    		clienteId = new Cliente();
+    	}
         return clienteId;
     }
 
@@ -178,6 +184,9 @@ public class Contrato implements Serializable {
     }
 
     public Funcionario getFuncionarioId() {
+    	if (funcionarioId == null) {
+    		funcionarioId = new Funcionario();
+    	}
         return funcionarioId;
     }
 
@@ -186,6 +195,9 @@ public class Contrato implements Serializable {
     }
 
     public TipoOperacao getTipoOperacaoId() {
+    	if (tipoOperacaoId == null) {
+    		tipoOperacaoId = new TipoOperacao();
+    	}
         return tipoOperacaoId;
     }
 

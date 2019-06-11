@@ -6,6 +6,7 @@
 package br.com.financeira.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -121,7 +123,11 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "chefia_id", referencedColumnName = "id")
     @ManyToOne
     private Funcionario chefiaId;
-    
+    @Transient
+    private BigDecimal totalPago;
+    @Transient
+    private BigDecimal totalDigitado;
+   
     public Funcionario() {
     }
 
@@ -323,6 +329,30 @@ public class Funcionario implements Serializable {
 
 	public void setChefiaId(Funcionario chefiaId) {
 		this.chefiaId = chefiaId;
+	}
+
+	public BigDecimal getTotalPago() {
+		totalPago = new BigDecimal(0);
+		for (Contrato contrato : contratoList) {
+//			if (contrato.getContratoHasStatusContratoList()))
+		}
+		return totalPago;
+	}
+
+	public void setTotalPago(BigDecimal totalPago) {
+		this.totalPago = totalPago;
+	}
+
+	public BigDecimal getTotalDigitado() {
+		totalPago = new BigDecimal(0);
+		for (Contrato contrato : contratoList) {
+//			if (contrato.getContratoHasStatusContratoList()))
+		}
+		return totalDigitado;
+	}
+
+	public void setTotalDigitado(BigDecimal totalDigitado) {
+		this.totalDigitado = totalDigitado;
 	}
     
 }

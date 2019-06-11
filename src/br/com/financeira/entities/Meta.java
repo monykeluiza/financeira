@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Meta.findById", query = "SELECT m FROM Meta m WHERE m.id = :id"),
     @NamedQuery(name = "Meta.findByDescricao", query = "SELECT m FROM Meta m WHERE m.descricao = :descricao"),
     @NamedQuery(name = "Meta.findByValor", query = "SELECT m FROM Meta m WHERE m.valor = :valor"),
-    @NamedQuery(name = "Meta.findByPeriodicidade", query = "SELECT m FROM Meta m WHERE m.periodicidade = :periodicidade"),
     @NamedQuery(name = "Meta.findByBatida", query = "SELECT m FROM Meta m WHERE m.batida = :batida"),
     @NamedQuery(name = "Meta.findByDataAlcance", query = "SELECT m FROM Meta m WHERE m.dataAlcance = :dataAlcance"),
     @NamedQuery(name = "Meta.findByFuncionario", query = "SELECT m FROM Meta m WHERE m.funcionarioId.id = :idFuncionario order by m.id desc"),
@@ -56,11 +55,6 @@ public class Meta implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
     private BigDecimal valor;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "periodicidade")
-    private String periodicidade;
     @Basic(optional = false)
     @NotNull
     @Column(name = "batida")
@@ -84,9 +78,8 @@ public class Meta implements Serializable {
         this.id = id;
     }
 
-    public Meta(Integer id, String periodicidade, boolean batida, Date dataVencimento) {
+    public Meta(Integer id, boolean batida, Date dataVencimento) {
         this.id = id;
-        this.periodicidade = periodicidade;
         this.batida = batida;
         this.dataVencimento = dataVencimento;
     }
@@ -113,14 +106,6 @@ public class Meta implements Serializable {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
-    }
-
-    public String getPeriodicidade() {
-        return periodicidade;
-    }
-
-    public void setPeriodicidade(String periodicidade) {
-        this.periodicidade = periodicidade;
     }
 
     public boolean getBatida() {
@@ -173,6 +158,9 @@ public class Meta implements Serializable {
     }
 
 	public Funcionario getFuncionarioId() {
+		if (funcionarioId == null) {
+			funcionarioId = new Funcionario();
+		}
 		return funcionarioId;
 	}
 

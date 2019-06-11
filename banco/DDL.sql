@@ -63,7 +63,6 @@ CREATE TABLE IF NOT EXISTS `meta` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `descricao` VARCHAR(500) NULL,
   `valor` DECIMAL(13,2) NULL,
-  `periodicidade` VARCHAR(45) NOT NULL,
   `batida` TINYINT(1) NOT NULL DEFAULT 0,
   `data_alcance` DATE NULL,
   `data_vencimento` DATE NOT NULL,

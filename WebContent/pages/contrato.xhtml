@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"  
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    template="/pages/template.xhtml">  
+      	<ui:define name="centro">
+      		<h:form id="contratopesqform">
+      			<p:growl id="msg" redisplay="false"  autoUpdate="true"  />
+      			<h:panelGrid cellpadding="10">
+						<p:dataTable var="contrato" value="#{contratoMb.listaContratos}" 
+						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
+                          widgetVar="grid" emptyMessage="Nenhum registro cadastrado." style="width: 1300px;" >
+                         		<p:column headerText="Cliente" filterMatchMode="contains" filterBy="#{contrato.clienteId.nome}" sortBy="#{contrato.clienteId.nome}" >
+						        	<h:outputText value="#{contrato.clienteId.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Valor Cliente" sortBy="#{contrato.valorCliente}" >
+						        	<h:outputText value="#{contrato.valorCliente}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Valor Pago" sortBy="#{contrato.valorPago}" >
+						        	<h:outputText value="#{contrato.valorPago}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Valor Pago" sortBy="#{contrato.valorContrato}" >
+						        	<h:outputText value="#{contrato.valorContrato}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Data Pgto." sortBy="#{contrato.dataPgto}" >
+						        	<h:outputText value="#{contrato.dataPgto}" >
+						        		<f:convertDateTime pattern="dd/MM/yyyy" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Qtd.Parcelas" >
+						        	<h:outputText value="#{contrato.qtdParcelas}" />
+						    	</p:column>
+						    	<p:column headerText="Tipo Operacao" >
+						        	<h:outputText value="#{contrato.tipoOperacaoId.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Banco">
+						        	<h:outputText value="#{contrato.bancoId.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Responsável">
+						        	<h:outputText value="#{contrato.funcionarioId.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Pago?">
+						        	<h:outputText value="#{contrato.valorPago == null?'SIM':'NÃO'}" />
+						    	</p:column>
+						    	<p:column style="width: 150px;" headerText="Ação">
+									<p:commandButton style="background: #14331D;" 
+										icon="fa fa fa-edit" title="Editar dados do Contrato"
+										oncomplete="PF('contratoDialog').show();" update="contratoDialog"
+										actionListener="#{contratoMb.prepararEditar(contrato)}" />
+									<p:commandButton style="background: #186930;" 
+										icon="fa fa fa-usd" title="Informar Pagamento" rendered="#{contrato.valorPago == null}"
+										oncomplete="PF('pagoDialog').show();" update="pagoDialog"
+										actionListener="#{contratoMb.prepararEditar(contrato)}" />
+								</p:column>
+                         </p:dataTable>
+            	</h:panelGrid> 
+            	<h:panelGrid>
+            		<p:commandButton value="Novo Contrato" icon="fa fa fa-plus" title="Cadastrar nova contrato" oncomplete="PF('contratoDialog').show();" update="contratoDialog" actionListener="#{contratoMb.limpar}" />
+            	</h:panelGrid>
+				</h:form>
+				
+				<p:dialog id="pagoDialog" widgetVar="pagoDialog" header="Informar pagamento de contrato" modal="true" appendTo="@(body)" >
+     				<h:form id="contratopagoform">
+     					<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
+     						<p:outputLabel>Número:</p:outputLabel>
+				     		<p:inputText size="50" disabled="true" maxlength="600" required="true" requiredMessage="O campo Número: é de preenchimento obrigatório!" value="#{contratoMb.contrato.numero}"/>
+				     		<p:outputLabel>Valor Cliente:</p:outputLabel>
+				     		<p:inputNumber disabled="true" decimalPlaces="2" required="true" decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p" requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!" value="#{contratoMb.contrato.valorCliente}"/>
+				     		<p:outputLabel>Valor Contrato:</p:outputLabel>
+				     		<p:inputNumber disabled="true" decimalPlaces="2" required="true" decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p" requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!" value="#{contratoMb.contrato.valorContrato}"/>
+				     		<p:outputLabel>Quantidade de Parcelas:</p:outputLabel>
+				     		<p:inputNumber disabled="true" value="#{contratoMb.contrato.qtdParcelas}" decimalPlaces="0"/>
+     					
+     						<p:outputLabel>Valor Pago:</p:outputLabel>
+					     	<p:inputNumber decimalPlaces="2"  decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p"  value="#{contratoMb.contrato.valorPago}"/>
+					     	<p:outputLabel>Data do Pagamento:</p:outputLabel>
+					     	<p:calendar value="#{contratoMb.contrato.dataPgto}"
+										navigator="true" mask="true" pattern="dd/MM/yyyy"/>
+							<p:outputLabel>Responsável:</p:outputLabel>
+					     	<p:selectOneMenu value="#{contratoMb.contrato.funcionarioId.id}" filter="true" filterMatchMode="contains" effect="fade" disabled="#{contratoMb.isFuncionario}">
+								<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+								<f:selectItems value="#{funcionarioMb.listaFuncionarios}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome} - #{item.cpf}"/>
+							</p:selectOneMenu>
+     					</h:panelGrid>
+     					<p:commandButton style="float:right;" process="@form" value="Enviar" icon="ui-icon-circle-check" action="#{contratoMb.saveOrUpdate}" update=":contratopesqform:msg :contratopesqform:grid" />
+     				</h:form>
+     			</p:dialog>
+				
+				<p:dialog id="contratoDialog" widgetVar="contratoDialog" header="Cadastrar novo contrato" modal="true" appendTo="@(body)" >
+     				<h:form id="contratocadastroform">
+     				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
+     					<p:outputLabel>Número:</p:outputLabel>
+				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Número: é de preenchimento obrigatório!" value="#{contratoMb.contrato.numero}"/>
+				     	<p:outputLabel>Valor Cliente:</p:outputLabel>
+				     	<p:inputNumber decimalPlaces="2" required="true" decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p" requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!" value="#{contratoMb.contrato.valorCliente}"/>
+				     	<p:outputLabel>Valor Contrato:</p:outputLabel>
+				     	<p:inputNumber decimalPlaces="2" required="true" decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p" requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!" value="#{contratoMb.contrato.valorContrato}"/>
+				     	<p:outputLabel>Quantidade de Parcelas:</p:outputLabel>
+				     	<p:inputNumber value="#{contratoMb.contrato.qtdParcelas}" decimalPlaces="0"/>
+				     	<p:outputLabel>Banco:</p:outputLabel>
+				     	<p:selectOneMenu value="#{contratoMb.contrato.bancoId.id}" filter="true" filterMatchMode="contains" effect="fade" >
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItems value="#{bancoMb.listaBancos}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome}"/>
+						</p:selectOneMenu>
+						<p:outputLabel>Cliente:</p:outputLabel>
+				     	<p:selectOneMenu value="#{contratoMb.contrato.clienteId.id}" filter="true" filterMatchMode="contains" effect="fade" >
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItems value="#{clienteMb.listaClientes}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome} - #{item.cpf}"/>
+						</p:selectOneMenu>
+						<p:outputLabel>Operação:</p:outputLabel>
+				     	<p:selectOneMenu value="#{contratoMb.contrato.tipoOperacaoId.id}" filter="true" filterMatchMode="contains" effect="fade" >
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItems value="#{tipoOperacaoMb.listaTipoOperacao}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome}"/>
+						</p:selectOneMenu>
+						<p:outputLabel>Valor Pago:</p:outputLabel>
+				     	<p:inputNumber decimalPlaces="2"  decimalSeparator="," thousandSeparator="." symbol="R$ " symbolPosition="p"  value="#{contratoMb.contrato.valorPago}"/>
+				     	<p:outputLabel>Data do Pagamento:</p:outputLabel>
+				     	<p:calendar value="#{contratoMb.contrato.dataPgto}"
+									navigator="true" mask="true" pattern="dd/MM/yyyy"/>
+						<p:outputLabel>Responsável:</p:outputLabel>
+				     	<p:selectOneMenu value="#{contratoMb.contrato.funcionarioId.id}" filter="true" filterMatchMode="contains" effect="fade" disabled="#{contratoMb.isFuncionario}">
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItems value="#{funcionarioMb.listaFuncionarios}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome} - #{item.cpf}"/>
+						</p:selectOneMenu>	
+				    </h:panelGrid> 
+				    <p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{contratoMb.saveOrUpdate}" update=":contratopesqform:msg :contratopesqform:grid" />
+				   </h:form>
+     			</p:dialog>     			
+        </ui:define>
+</ui:composition>
