@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
+	<ui:define name="centro">
+		<h:form id="dashboardform">
+			<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
+			<h:panelGrid width="100px" columns="2" style="height:50px;background-color:#0b880e;">
+				<h2 style="font-family: Arial, Helvetica, sans-serif;color:white;">CONTRATOS PAGOS:</h2>
+				<h:outputLabel value="#{dashboardMB.totalContratosPagos}" style="font-family: Arial, Helvetica, sans-serif;color:white;text-align:right;font-size: 400%;margin: 50px;"/>
+			</h:panelGrid>
+			<h:panelGrid width="100px" columns="2" style="height:50px;background-color:#fdff5d;">
+				<h2 style="font-family: Arial, Helvetica, sans-serif;color:black;">CONTRATOS ANDAMENTO:</h2>
+				<h:outputLabel value="#{dashboardMB.totalContratosAndamento}" style="font-family: Arial, Helvetica, sans-serif;color:Black;text-align:right;font-size: 400%;margin: 50px;"/>
+			</h:panelGrid>
+			<h:panelGrid width="100px" columns="2"  style="height:50px;background-color:#cc121a;">
+				<h2 style="font-family: Arial, Helvetica, sans-serif;color:white;">CONTRATOS CANCELADOS:</h2>
+				<h:outputLabel value="#{dashboardMB.totalContratosCancelados}" style="font-family: Arial, Helvetica, sans-serif;color:white;text-align:right;font-size: 400%;margin: 50px;"/>
+			</h:panelGrid>
+		</h:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>
+

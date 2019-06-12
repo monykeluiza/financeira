@@ -7,6 +7,7 @@ package br.com.financeira.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -24,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,13 +39,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "contrato")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Contrato.findAll", query = "SELECT c FROM Contrato c"),
+    @NamedQuery(name = "Contrato.findAll", query = "SELECT c FROM Contrato c order by c.id desc"),
     @NamedQuery(name = "Contrato.findById", query = "SELECT c FROM Contrato c WHERE c.id = :id"),
     @NamedQuery(name = "Contrato.findByValorCliente", query = "SELECT c FROM Contrato c WHERE c.valorCliente = :valorCliente"),
     @NamedQuery(name = "Contrato.findByValorPago", query = "SELECT c FROM Contrato c WHERE c.valorPago = :valorPago"),
     @NamedQuery(name = "Contrato.findByNumero", query = "SELECT c FROM Contrato c WHERE c.numero = :numero"),
     @NamedQuery(name = "Contrato.findByValorContrato", query = "SELECT c FROM Contrato c WHERE c.valorContrato = :valorContrato"),
     @NamedQuery(name = "Contrato.findByQtdParcelas", query = "SELECT c FROM Contrato c WHERE c.qtdParcelas = :qtdParcelas"),
+    @NamedQuery(name = "Contrato.findByFuncionario", query = "SELECT c FROM Contrato c WHERE c.funcionarioId.id = :idFuncionario order by c.id desc"),
+    @NamedQuery(name = "Contrato.findByCliente", query = "SELECT c FROM Contrato c WHERE c.clienteId.id = :idCliente order by c.id desc"),
     @NamedQuery(name = "Contrato.findByDataPgto", query = "SELECT c FROM Contrato c WHERE c.dataPgto = :dataPgto")})
 public class Contrato implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -89,6 +93,12 @@ public class Contrato implements Serializable {
     private TipoOperacao tipoOperacaoId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contrato")
     private List<ContratoHasStatusContrato> contratoHasStatusContratoList;
+    @Transient
+    private StatusContrato ultimoStatus;
+    @Transient
+    private String rowStyleClass;
+    @Transient
+    private Date dataPrimeiroStatus;
 
     public Contrato() {
     }
@@ -204,9 +214,12 @@ public class Contrato implements Serializable {
     public void setTipoOperacaoId(TipoOperacao tipoOperacaoId) {
         this.tipoOperacaoId = tipoOperacaoId;
     }
-
+    
     @XmlTransient
     public List<ContratoHasStatusContrato> getContratoHasStatusContratoList() {
+    	if (contratoHasStatusContratoList == null) {
+    		return new ArrayList<ContratoHasStatusContrato>();
+    	}
         return contratoHasStatusContratoList;
     }
 
@@ -238,5 +251,40 @@ public class Contrato implements Serializable {
     public String toString() {
         return "entidades_financeira.Contrato[ id=" + id + " ]";
     }
+
+	public StatusContrato getUltimoStatus() {
+		ultimoStatus = getContratoHasStatusContratoList().get(getContratoHasStatusContratoList().size()-1).getStatusContrato();
+		return ultimoStatus;
+	}
+
+	public void setUltimoStatus(StatusContrato ultimoStatus) {
+		this.ultimoStatus = ultimoStatus;
+	}
+
+	public String getRowStyleClass() {
+		if (getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO)) {
+			return "row_yellow";
+		}
+		if (getUltimoStatus().getId().equals(StatusContrato.PAGO)) {
+			return "row_green";
+		}
+		if (getUltimoStatus().getId().equals(StatusContrato.CANCELADO)) {
+			return "row_red";
+		}
+		return rowStyleClass;
+	}
+
+	public void setRowStyleClass(String rowStyleClass) {
+		this.rowStyleClass = rowStyleClass;
+	}
+
+	public Date getDataPrimeiroStatus() {
+		dataPrimeiroStatus = getContratoHasStatusContratoList().get(getContratoHasStatusContratoList().size()-1).getData();
+		return dataPrimeiroStatus;
+	}
+
+	public void setDataPrimeiroStatus(Date dataPrimeiroStatus) {
+		this.dataPrimeiroStatus = dataPrimeiroStatus;
+	}
     
 }

@@ -334,7 +334,10 @@ public class Funcionario implements Serializable {
 	public BigDecimal getTotalPago() {
 		totalPago = new BigDecimal(0);
 		for (Contrato contrato : contratoList) {
-//			if (contrato.getContratoHasStatusContratoList()))
+			if (contrato.getValorPago() != null) {
+				totalPago = totalPago.add(contrato.getValorPago());
+			}
+			
 		}
 		return totalPago;
 	}
@@ -344,9 +347,11 @@ public class Funcionario implements Serializable {
 	}
 
 	public BigDecimal getTotalDigitado() {
-		totalPago = new BigDecimal(0);
+		totalDigitado = new BigDecimal(0);
 		for (Contrato contrato : contratoList) {
-//			if (contrato.getContratoHasStatusContratoList()))
+			if (contrato.getValorContrato() != null) {
+				totalDigitado = totalDigitado.add(contrato.getValorContrato());
+			}
 		}
 		return totalDigitado;
 	}

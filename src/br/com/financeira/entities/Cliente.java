@@ -36,9 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "cliente")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c"),
+    @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c order by c.id desc"),
     @NamedQuery(name = "Cliente.findById", query = "SELECT c FROM Cliente c WHERE c.id = :id"),
-    @NamedQuery(name = "Cliente.findByFuncionario", query = "SELECT c FROM Cliente c WHERE c.funcionarioId.id = :idFuncionario"),
+    @NamedQuery(name = "Cliente.findByFuncionario", query = "SELECT c FROM Cliente c WHERE c.funcionarioId.id = :idFuncionario order by c.id desc"),
     @NamedQuery(name = "Cliente.findByNome", query = "SELECT c FROM Cliente c WHERE c.nome = :nome"),
     @NamedQuery(name = "Cliente.findByCpf", query = "SELECT c FROM Cliente c WHERE c.cpf = :cpf"),
     @NamedQuery(name = "Cliente.findByDataNasc", query = "SELECT c FROM Cliente c WHERE c.dataNasc = :dataNasc"),
@@ -98,6 +98,8 @@ public class Cliente implements Serializable {
     private Funcionario funcionarioId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteId")
     private List<Contato> contatoList;
+    @Column(name = "beneficio")
+    private Integer beneficio;
 
     public Cliente() {
     }
@@ -258,5 +260,13 @@ public class Cliente implements Serializable {
     public String toString() {
         return "entidades_financeira.Cliente[ id=" + id + " ]";
     }
+
+	public Integer getBeneficio() {
+		return beneficio;
+	}
+
+	public void setBeneficio(Integer beneficio) {
+		this.beneficio = beneficio;
+	}
     
 }

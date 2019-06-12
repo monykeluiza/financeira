@@ -12,8 +12,10 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.financeira.entities.Cliente;
 import br.com.financeira.entities.Contrato;
 import br.com.financeira.entities.Perfil;
+import br.com.financeira.entities.StatusContrato;
 import br.com.financeira.entities.Usuario;
 import br.com.financeira.services.ContratoService;
 import br.com.financeira.utils.JsfUtil;
@@ -83,7 +85,6 @@ public class ContratoMB implements Serializable {
 				carregarLista();
 			}
 			JsfUtil.closeModal("contratoDialog");
-			JsfUtil.closeModal("pagoDialog");
 		} catch (Exception e) {
 			JsfUtil.addErrorMessage(e.getMessage());
 			e.printStackTrace();
@@ -104,6 +105,25 @@ public class ContratoMB implements Serializable {
 			contrato.setFuncionarioId(usuarioLogado.getFuncionarioList().get(0));
 			isFuncionario = true;
 		}
+	}
+	
+	public void limparSetandoCliente(Cliente cliente) {
+		limpar();
+		contrato.setClienteId(cliente);
+	}
+	
+	public void updateStatusPago() {
+		contrato = service.updateStatus(contrato, usuarioLogado, StatusContrato.PAGO);
+		JsfUtil.addSuccessMessage("Contrato atualizado com sucesso.");
+		JsfUtil.closeModal("pagoDialog");
+		carregarLista();
+	}
+	
+	public void updateStatusCancelado(Contrato c) {
+		contrato = service.updateStatus(c, usuarioLogado, StatusContrato.CANCELADO);
+		JsfUtil.addSuccessMessage("Contrato atualizado com sucesso.");
+		JsfUtil.closeModal("pagoDialog");
+		carregarLista();
 	}
 
 	public List<Contrato> getListaContratos() {

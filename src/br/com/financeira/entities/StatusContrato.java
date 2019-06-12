@@ -48,6 +48,10 @@ public class StatusContrato implements Serializable {
     private String nome;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusContrato")
     private List<ContratoHasStatusContrato> contratoHasStatusContratoList;
+    
+    public final static Integer ANDAMENTO = 1; 
+    public final static Integer PAGO = 2; 
+    public final static Integer CANCELADO = 3; 
 
     public StatusContrato() {
     }

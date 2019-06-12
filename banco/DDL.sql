@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `rg` VARCHAR(45) NULL,
   `orgao` VARCHAR(400) NULL,
   `funcionario_id` INT NOT NULL,
+   `beneficio` INT(11) NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_cliente_funcionario1`
     FOREIGN KEY (`funcionario_id`)
@@ -152,7 +153,7 @@ DROP TABLE IF EXISTS `contato` ;
 
 CREATE TABLE IF NOT EXISTS `contato` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `data` DATE NOT NULL,
+  `data` DATETIME NOT NULL,
   `sucesso` TINYINT(1) NOT NULL,
   `obs` VARCHAR(200) NULL,
   `funcionario_id` INT NOT NULL,
@@ -198,7 +199,6 @@ CREATE TABLE IF NOT EXISTS `lembrete` (
   `tipo_lembrete_id` INT NOT NULL,
   `data` DATETIME NOT NULL,
   `executado` TINYINT(1) NOT NULL DEFAULT 0,
-  `beneficio` INT(11) NULL,
   `usuario_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_lembrete_tipo_lembrete1`

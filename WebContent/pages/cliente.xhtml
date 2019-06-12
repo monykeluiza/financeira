@@ -1,94 +1,259 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"  
-    xmlns:h="http://java.sun.com/jsf/html"  
-    xmlns:f="http://java.sun.com/jsf/core"  
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    template="/pages/template.xhtml">  
-      	<ui:define name="centro">
-      		<h:form id="clientepesqform">
-      			<p:growl id="msg" redisplay="false"  autoUpdate="true"  />
-      			<h:panelGrid cellpadding="10">
-						<p:dataTable var="cliente" value="#{clienteMb.listaClientes}" 
-						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
-                          widgetVar="grid" emptyMessage="Nenhum registro cadastrado." style="width: 1300px;" >
-                         		<p:column headerText="Nome" filterMatchMode="contains" filterBy="#{cliente.nome}" sortBy="#{cliente.nome}" style="width: 150px;">
-						        	<h:outputText value="#{cliente.nome}" />
-						    	</p:column>
-						    	<p:column headerText="CPF" filterMatchMode="contains" filterBy="#{cliente.cpf}" sortBy="#{cliente.cpf}" style="width: 80px;">
-						        	<h:outputText value="#{cliente.cpf}" />
-						    	</p:column>
-						    	<p:column headerText="RG" filterMatchMode="contains" filterBy="#{cliente.rg}" sortBy="#{cliente.rg}" style="width: 80px;">
-						        	<h:outputText value="#{cliente.rg}" />
-						    	</p:column>
-						    	<p:column headerText="SIAPE" filterMatchMode="contains" filterBy="#{cliente.siape}" sortBy="#{cliente.siape}" style="width: 80px;">
-						        	<h:outputText value="#{cliente.siape}" />
-						    	</p:column>
-						    	<p:column headerText="Órgão" filterMatchMode="contains" filterBy="#{cliente.orgao}" sortBy="#{cliente.orgao}" style="width: 80px;">
-						        	<h:outputText value="#{cliente.orgao}" />
-						    	</p:column>
-						    	<p:column headerText="E-mail"  style="width: 130px;">
-						        	<h:outputText value="#{cliente.email}" />
-						    	</p:column>
-						    	<p:column headerText="Telefone(s)"  style="width: 80px;">
-						        	<h:outputText value="#{cliente.telefones}" />
-						    	</p:column>
-						    	<p:column headerText="Whatsapp" style="width: 70px;">
-						        	<h:outputText value="#{cliente.whatsapp}" />
-						    	</p:column>
-						    	<p:column headerText="Data de Nascimento" style="width: 70px;">
-						        	<h:outputText value="#{cliente.dataNasc}" >
-						        		<f:convertDateTime pattern="dd/MM/yyyy" />
-						        	</h:outputText>
-						    	</p:column>
-						    	<p:column headerText="Funcionario" style="width: 70px;">
-						        	<h:outputText value="#{cliente.funcionarioId.nome}" />
-						    	</p:column>
-						    	<p:column style="width: 150px;" headerText="Ação">
-									<p:commandButton style="background: #14331D;" 
-										icon="fa fa fa-edit" title="Editar dados do Cliente"
-										oncomplete="PF('clienteDialog').show();" update="clienteDialog"
-										actionListener="#{clienteMb.prepararEditar(cliente)}" />
-								</p:column>
-                         </p:dataTable>
-            	</h:panelGrid> 
-            	<h:panelGrid>
-            		<p:commandButton value="Novo Cliente" icon="fa fa fa-plus" title="Cadastrar novo cliente" oncomplete="PF('clienteDialog').show();" update="clienteDialog" actionListener="#{clienteMb.limpar}" />
-            	</h:panelGrid>
-				</h:form>
-				
-				
-				<p:dialog id="clienteDialog" widgetVar="clienteDialog" header="Cadastrar novo cliente" modal="true" appendTo="@(body)" >
-     				<h:form id="clientecadastroform">
-     				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
-     					<p:outputLabel>Nome:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Nome é de preenchimento obrigatório!" value="#{clienteMb.cliente.nome}"/>
-				     	<p:outputLabel>CPF:</p:outputLabel>
-				     	<p:inputMask mask="999.999.999-99" required="true" requiredMessage="O campo CPF é de preenchimento obrigatório!" value="#{clienteMb.cliente.cpf}"/>
-				     	<p:outputLabel>RG:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{clienteMb.cliente.rg}"/>
-				     	<p:outputLabel>SIAPE:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{clienteMb.cliente.siape}"/>
-				     	<p:outputLabel>Órgão:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{clienteMb.cliente.orgao}"/>
-				     	<p:outputLabel>E-mail:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{clienteMb.cliente.email}" required="true" requiredMessage="O campo E-mail é de preenchimento obrigatório!"/>
-				     	<p:outputLabel>Telefone(s):</p:outputLabel>
-				     	<p:inputText value="#{clienteMb.cliente.telefones}" required="true" requiredMessage="O campo Telefone é de preenchimento obrigatório!"/>
-				     	<p:outputLabel>Whatsapp:</p:outputLabel>
-				     	<p:inputMask mask="(99) 9 9999-9999" value="#{clienteMb.cliente.whatsapp}" />
-				     	<p:outputLabel>Endereço:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{clienteMb.cliente.endereco}"/>
-				     	<p:outputLabel>Data de Nascimento:</p:outputLabel>
-				     	<p:calendar value="#{clienteMb.cliente.dataNasc}"
-									navigator="true" mask="true" pattern="dd/MM/yyyy"
-									required="true"
-									requiredMessage="O campo Data de Nascimento é de preechimento obrigatório." />
-				    </h:panelGrid> 
-				    <p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{clienteMb.saveOrUpdate}" update=":clientepesqform:msg :clientepesqform:grid" />
-				   </h:form>
-     			</p:dialog>     			
-        </ui:define>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/pages/template.xhtml">
+	<ui:define name="centro">
+		<style type="text/css">
+			.row_red {
+				background-color: #cc121a !important;
+				background-image: none !important;
+				color: #ffffff !important;
+			}
+			
+			.row_yellow {
+				background-color: #fdff5d !important;
+				background-image: none !important;
+				color: #000000 !important;
+			}
+			
+			.row_green {
+				background-color: #0b880e !important;
+				background-image: none !important;
+				color: #ffffff !important;
+			}
+		</style>
+		<h:form id="clientepesqform">
+			<p:growl id="msg" redisplay="false" autoUpdate="true" />
+			<h:panelGrid cellpadding="10">
+				<p:dataTable var="cliente" value="#{clienteMb.listaClientes}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
+					paginator="true" rows="15" id="grid" widgetVar="grid"
+					emptyMessage="Nenhum registro cadastrado." >
+					<p:column style="width:16px" >
+						<p:rowToggler rendered="#{cliente.contratoList.size() > 0 or cliente.contatoList.size()>0}" />
+					</p:column>
+					<p:column headerText="Nome" filterMatchMode="contains"
+						filterBy="#{cliente.nome}" sortBy="#{cliente.nome}">
+						<h:outputText value="#{cliente.nome}" />
+					</p:column>
+					<p:column headerText="CPF" filterMatchMode="contains"
+						filterBy="#{cliente.cpf}" sortBy="#{cliente.cpf}">
+						<h:outputText value="#{cliente.cpf}" />
+					</p:column>
+					<p:column headerText="RG" filterMatchMode="contains"
+						filterBy="#{cliente.rg}" sortBy="#{cliente.rg}">
+						<h:outputText value="#{cliente.rg}" />
+					</p:column>
+					<p:column headerText="Benefício" filterMatchMode="contains"
+						filterBy="#{cliente.beneficio}" sortBy="#{cliente.beneficio}">
+						<h:outputText value="#{cliente.beneficio}" />
+					</p:column>
+					<p:column headerText="SIAPE" filterMatchMode="contains"
+						filterBy="#{cliente.siape}" sortBy="#{cliente.siape}">
+						<h:outputText value="#{cliente.siape}" />
+					</p:column>
+					<p:column headerText="Órgão" filterMatchMode="contains"
+						filterBy="#{cliente.orgao}" sortBy="#{cliente.orgao}">
+						<h:outputText value="#{cliente.orgao}" />
+					</p:column>
+					<p:column headerText="E-mail" >
+						<h:outputText value="#{cliente.email}" />
+					</p:column>
+					<p:column headerText="Telefone(s)" >
+						<h:outputText value="#{cliente.telefones}" />
+					</p:column>
+					<p:column headerText="Whatsapp" >
+						<h:outputText value="#{cliente.whatsapp}" />
+					</p:column>
+					<p:column headerText="Data de Nascimento" >
+						<h:outputText value="#{cliente.dataNasc}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Funcionario">
+						<h:outputText value="#{cliente.funcionarioId.nome}" />
+					</p:column>
+					<p:column headerText="Ação">
+						<p:commandButton style="background: #14331D;" icon="fa fa fa-edit"
+							title="Editar dados do Cliente"
+							oncomplete="PF('clienteDialog').show();" update="clienteDialog"
+							actionListener="#{clienteMb.prepararEditar(cliente)}" />
+						<p:commandButton style="background: #0f9435;"
+							icon="fa fa fa-phone" title="Registra contato"
+							oncomplete="PF('contatoDialog').show();" update="contatoDialog"
+							actionListener="#{contatoMb.limpar(cliente)}" />
+						<p:commandButton style="background: #186930;"
+							icon="fa fa fa-handshake-o" title="Adicionar Contrato"
+							oncomplete="PF('contratoDialogCliente').show();" update="contratoDialogCliente"
+							actionListener="#{contratoMb.limparSetandoCliente(cliente)}" >
+							<f:setPropertyActionListener value="#{cliente}" target="#{contratoMb.contrato.clienteId}" />	
+						</p:commandButton>							
+					</p:column>
+
+					<p:rowExpansion>
+						<p:dataTable var="contrato" value="#{cliente.contratoList}"
+							id="grid2" widgetVar="grid2"
+							rowStyleClass="#{contrato.rowStyleClass}" scrollable="true"
+							scrollHeight="100" rowIndexVar="index" rendered="#{cliente.contratoList.size() > 0}">
+							<f:facet name="header">
+									Contratos
+							</f:facet>
+							<p:column headerText="Número"
+								sortBy="#{contrato.numero}">
+								<h:outputText value="#{contrato.numero}" />
+							</p:column>
+							<p:column headerText="Valor Cliente"
+								sortBy="#{contrato.valorCliente}">
+								<h:outputText value="#{contrato.valorCliente}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Valor Pago" sortBy="#{contrato.valorPago}">
+								<h:outputText value="#{contrato.valorPago}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Valor Contrato"
+								sortBy="#{contrato.valorContrato}">
+								<h:outputText value="#{contrato.valorContrato}">
+									<f:convertNumber type="currency" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Data" sortBy="#{contrato.dataPrimeiroStatus}">
+								<h:outputText value="#{contrato.dataPrimeiroStatus}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Data Pgto." sortBy="#{contrato.dataPgto}">
+								<h:outputText value="#{contrato.dataPgto}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Qtd.Parcelas">
+								<h:outputText value="#{contrato.qtdParcelas}" />
+							</p:column>
+							<p:column headerText="Tipo Operacao">
+								<h:outputText value="#{contrato.tipoOperacaoId.nome}" />
+							</p:column>
+							<p:column headerText="Banco">
+								<h:outputText value="#{contrato.bancoId.nome}" />
+							</p:column>
+							<p:column headerText="Pago?">
+								<h:outputText value="#{contrato.valorPago!=null?'SIM':'NÃO'}" />
+							</p:column>
+							<p:column headerText="Status">
+								<h:outputText value="#{contrato.ultimoStatus.nome}" />
+							</p:column>
+						</p:dataTable>
+						<br />
+						<p:dataTable var="contato" value="#{cliente.contatoList}"
+							id="grid3" widgetVar="grid3"
+							scrollable="true" rendered="#{cliente.contatoList.size() > 0}"
+							scrollHeight="100" rowIndexVar="index" style="width: 800px;">
+							<f:facet name="header" >
+									Contatos
+							</f:facet>
+							<p:column headerText="Data" sortBy="#{contato.data}">
+								<h:outputText value="#{contato.data}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Observação" >
+								<h:outputText value="#{contato.obs}" />
+							</p:column>
+							<p:column headerText="Responsável" >
+								<h:outputText value="#{contato.funcionarioId.nome}" />
+							</p:column>
+						</p:dataTable>
+					</p:rowExpansion>
+				</p:dataTable>
+			</h:panelGrid>
+			<h:panelGrid>
+				<p:commandButton value="Novo Cliente" icon="fa fa fa-plus"
+					title="Cadastrar novo cliente"
+					oncomplete="PF('clienteDialog').show();" update="clienteDialog"
+					actionListener="#{clienteMb.limpar}" />
+			</h:panelGrid>
+		</h:form>
+
+		<p:dialog id="contatoDialog" widgetVar="contatoDialog"
+			header="Registrar contato com cliente" modal="true"
+			appendTo="@(body)">
+			<h:form id="contatocadastroform">
+				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3"
+					cellspacing="3">
+					<p:outputLabel>Obs:</p:outputLabel>
+					<p:inputTextarea rows="4" value="#{contatoMb.contato.obs}" />
+					<p:outputLabel>Data:</p:outputLabel>
+					<p:calendar value="#{contatoMb.contato.data}" navigator="true"
+						mask="true" pattern="dd/MM/yyyy HH:mm" required="true"
+						requiredMessage="O campo Data é de preechimento obrigatório." />
+				</h:panelGrid>
+				<p:commandButton style="float:right;" process="@form"
+					value="Cadastrar" icon="ui-icon-circle-check"
+					action="#{contatoMb.saveOrUpdate}"
+					update=":clientepesqform:msg :clientepesqform:grid" />
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog id="contratoDialogCliente" widgetVar="contratoDialogCliente"
+			header="Cadastrar novo contrato" modal="true" appendTo="@(body)">
+			<ui:include src="/pages/formCadastroContrato.xhtml"/>
+		</p:dialog>
+
+
+		<p:dialog id="clienteDialog" widgetVar="clienteDialog"
+			header="Cadastrar novo cliente" modal="true" appendTo="@(body)">
+			<h:form id="clientecadastroform">
+				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3"
+					cellspacing="3">
+					<p:outputLabel>Nome:</p:outputLabel>
+					<p:inputText size="50" maxlength="600" required="true"
+						requiredMessage="O campo Nome é de preenchimento obrigatório!"
+						value="#{clienteMb.cliente.nome}" />
+					<p:outputLabel>CPF:</p:outputLabel>
+					<p:inputMask mask="999.999.999-99" required="true"
+						requiredMessage="O campo CPF é de preenchimento obrigatório!"
+						value="#{clienteMb.cliente.cpf}" />
+					<p:outputLabel>RG:</p:outputLabel>
+					<p:inputText size="50" maxlength="600"
+						value="#{clienteMb.cliente.rg}" />
+					<p:outputLabel>SIAPE:</p:outputLabel>
+					<p:inputText size="50" maxlength="600"
+						value="#{clienteMb.cliente.siape}" />
+					<p:outputLabel>Benefício:</p:outputLabel>
+					<p:inputText 
+						value="#{clienteMb.cliente.beneficio}" />
+					<p:outputLabel>Órgão:</p:outputLabel>
+					<p:inputText size="50" maxlength="600"
+						value="#{clienteMb.cliente.orgao}" />
+					<p:outputLabel>E-mail:</p:outputLabel>
+					<p:inputText size="50" maxlength="600"
+						value="#{clienteMb.cliente.email}" />
+					<p:outputLabel>Telefone(s):</p:outputLabel>
+					<p:inputText value="#{clienteMb.cliente.telefones}" required="true"
+						requiredMessage="O campo Telefone é de preenchimento obrigatório!" />
+					<p:outputLabel>Whatsapp:</p:outputLabel>
+					<p:inputMask mask="(99) 9 9999-9999"
+						value="#{clienteMb.cliente.whatsapp}" />
+					<p:outputLabel>Endereço:</p:outputLabel>
+					<p:inputText size="50" maxlength="600"
+						value="#{clienteMb.cliente.endereco}" />
+					<p:outputLabel>Data de Nascimento:</p:outputLabel>
+					<p:calendar value="#{clienteMb.cliente.dataNasc}" navigator="true"
+						mask="true" pattern="dd/MM/yyyy" required="true"
+						requiredMessage="O campo Data de Nascimento é de preechimento obrigatório." />
+				</h:panelGrid>
+				<p:commandButton style="float:right;" process="@form"
+					value="Cadastrar" icon="ui-icon-circle-check"
+					action="#{clienteMb.saveOrUpdate}"
+					update=":clientepesqform:msg :clientepesqform:grid" />
+			</h:form>
+		</p:dialog>
+	</ui:define>
 </ui:composition>

@@ -1,0 +1,20 @@
+.row_red {
+	background-color: #cc121a !important;
+	background-image: none !important;
+	color: #ffffff !important;
+}
+
+.row_yellow {
+	background-color: #fdff5d !important;
+	background-image: none !important;
+	color: #000000 !important;
+}
+
+.row_green {
+	background-color: #0b880e !important;
+	background-image: none !important;
+	color: #ffffff !important;
+}
+
+
+

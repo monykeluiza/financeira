@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
 
+import br.com.financeira.entities.Cliente;
 import br.com.financeira.entities.Contrato;
 import br.com.financeira.entities.Funcionario;
 import br.com.financeira.persist.DataAccess;
@@ -55,6 +56,13 @@ public class ContratoDAO extends DataAccess<Contrato>  implements IContratoDao{
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("idFuncionario", funcionario.getId());
 		return super.findWithNamedQuery("Contrato.findByFuncionario", parametros);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Contrato> findByCliente(Cliente cliente) {
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("idCliente", cliente.getId());
+		return super.findWithNamedQuery("Contrato.findBycliente", parametros);
 	}
 
 }

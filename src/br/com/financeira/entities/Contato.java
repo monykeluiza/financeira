@@ -32,10 +32,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "contato")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Contato.findAll", query = "SELECT c FROM Contato c"),
+    @NamedQuery(name = "Contato.findAll", query = "SELECT c FROM Contato c order by c.id desc"),
     @NamedQuery(name = "Contato.findById", query = "SELECT c FROM Contato c WHERE c.id = :id"),
     @NamedQuery(name = "Contato.findByData", query = "SELECT c FROM Contato c WHERE c.data = :data"),
     @NamedQuery(name = "Contato.findBySucesso", query = "SELECT c FROM Contato c WHERE c.sucesso = :sucesso"),
+    @NamedQuery(name = "Contato.findByCliente", query = "SELECT c FROM Contato c WHERE c.clienteId.id = :clienteId order by c.id desc"),
+    @NamedQuery(name = "Contato.findByFuncionario", query = "SELECT c FROM Contato c WHERE c.funcionarioId.id = :funcionarioId order by c.id desc"),
     @NamedQuery(name = "Contato.findByObs", query = "SELECT c FROM Contato c WHERE c.obs = :obs")})
 public class Contato implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -47,7 +49,7 @@ public class Contato implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "data")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date data;
     @Basic(optional = false)
     @NotNull

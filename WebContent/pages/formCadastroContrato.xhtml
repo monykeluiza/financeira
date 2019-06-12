@@ -1,0 +1,70 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	>
+			<h:form id="contratocadastroform">
+				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3"
+					cellspacing="3">
+					<p:outputLabel>Número:</p:outputLabel>
+					<p:inputText size="50" maxlength="600" required="true"
+						requiredMessage="O campo Número: é de preenchimento obrigatório!"
+						value="#{contratoMb.contrato.numero}" />
+					<p:outputLabel>Valor Cliente:</p:outputLabel>
+					<p:inputNumber decimalPlaces="2" required="true"
+						decimalSeparator="," thousandSeparator="." symbol="R$ "
+						symbolPosition="p"
+						requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!"
+						value="#{contratoMb.contrato.valorCliente}" />
+					<p:outputLabel>Valor Contrato:</p:outputLabel>
+					<p:inputNumber decimalPlaces="2" required="true"
+						decimalSeparator="," thousandSeparator="." symbol="R$ "
+						symbolPosition="p"
+						requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!"
+						value="#{contratoMb.contrato.valorContrato}" />
+					<p:outputLabel>Quantidade de Parcelas:</p:outputLabel>
+					<p:inputNumber value="#{contratoMb.contrato.qtdParcelas}"
+						decimalPlaces="0" />
+					<p:outputLabel>Banco:</p:outputLabel>
+					<p:selectOneMenu value="#{contratoMb.contrato.bancoId.id}"
+						filter="true" filterMatchMode="contains" effect="fade">
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{bancoMb.listaBancos}" var="item"
+							itemValue="#{item.id}" itemLabel="#{item.nome}" />
+					</p:selectOneMenu>
+					<p:outputLabel>Cliente:</p:outputLabel>
+					<p:selectOneMenu value="#{contratoMb.contrato.clienteId.id}"
+						filter="true" filterMatchMode="contains" effect="fade">
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{clienteMb.listaClientes}" var="item"
+							itemValue="#{item.id}" itemLabel="#{item.nome} - #{item.cpf}" />
+					</p:selectOneMenu>
+					<p:outputLabel>Operação:</p:outputLabel>
+					<p:selectOneMenu value="#{contratoMb.contrato.tipoOperacaoId.id}"
+						filter="true" filterMatchMode="contains" effect="fade">
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{tipoOperacaoMb.listaTipoOperacao}"
+							var="item" itemValue="#{item.id}" itemLabel="#{item.nome}" />
+					</p:selectOneMenu>
+					<p:outputLabel>Responsável:</p:outputLabel>
+					<p:selectOneMenu value="#{contratoMb.contrato.funcionarioId.id}"
+						filter="true" filterMatchMode="contains" effect="fade"
+						disabled="#{contratoMb.isFuncionario}">
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{funcionarioMb.listaFuncionarios}"
+							var="item" itemValue="#{item.id}"
+							itemLabel="#{item.nome} - #{item.cpf}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:commandButton style="float:right;" process="@form"
+					value="Cadastrar" icon="ui-icon-circle-check"
+					action="#{contratoMb.saveOrUpdate}"
+					update="@all" />
+			</h:form>
+</ui:fragment>
+
