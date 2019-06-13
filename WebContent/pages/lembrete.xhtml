@@ -72,9 +72,9 @@
 						value="#{lembreteMb.lembrete.descricao}" />
 					<p:outputLabel>Data e Hora:</p:outputLabel>
 					<p:calendar value="#{lembreteMb.lembrete.data}" navigator="true"
-						mask="true" pattern="dd/MM/yyyy HH:mm:ss" required="true"
+						mask="true" pattern="dd/MM/yyyy" required="true"
 						mindate="#{lembreteMb.dataAtual}"
-						requiredMessage="O campo Dataé de preechimento obrigatório." />
+						requiredMessage="O campo Data é de preechimento obrigatório." />
 					<p:outputLabel>Usuário:</p:outputLabel>
 					<p:selectOneMenu value="#{lembreteMb.lembrete.usuarioId.id}"
 						filter="true" filterMatchMode="contains" effect="fade">

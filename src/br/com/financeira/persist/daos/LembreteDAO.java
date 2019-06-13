@@ -1,5 +1,6 @@
 package br.com.financeira.persist.daos;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import br.com.financeira.entities.Lembrete;
 import br.com.financeira.entities.Funcionario;
 import br.com.financeira.persist.DataAccess;
 import br.com.financeira.persist.ifs.ILembreteDao;
+import br.com.financeira.utils.Util;
 
 @Stateless
 public class LembreteDAO extends DataAccess<Lembrete>  implements ILembreteDao{
@@ -53,8 +55,17 @@ public class LembreteDAO extends DataAccess<Lembrete>  implements ILembreteDao{
 	@Override
 	public List<Lembrete> findByFuncionario(Funcionario funcionario) {
 		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("idFuncionario", funcionario.getId());
+		parametros.put("usuarioId", funcionario.getUsuarioId().getId());
 		return super.findWithNamedQuery("Lembrete.findByFuncionario", parametros);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Lembrete> findByFuncionarioAtivas(Funcionario funcionario) {
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("usuarioId", funcionario.getId());
+		parametros.put("data", Util.zerarHoras(new Date()));
+		parametros.put("dataFim", Util.addHoraFimDoDia(new Date()));
+		return super.findWithNamedQuery("Lembrete.findByFuncionarioAtivas", parametros);
 	}
 
 }

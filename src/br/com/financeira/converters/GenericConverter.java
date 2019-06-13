@@ -5,6 +5,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import br.com.financeira.entities.TipoLembrete;
+import br.com.financeira.entities.Usuario;
+
 @FacesConverter("genericConverter")
 public class GenericConverter implements Converter {
     
@@ -18,15 +21,20 @@ public class GenericConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object value) {
-//        if (value instanceof EixoTecnologico) {
-//        	EixoTecnologico entity= (EixoTecnologico) value;
-//        	if (entity != null && entity.getId() != null) {
-//               uiComponent.getAttributes().put( entity.getId().toString(), entity);
-//        		 return entity.getId().toString();
-//            }
-//        }
-        
-        
+        if (value instanceof Usuario) {
+        	Usuario entity= (Usuario) value;
+        	if (entity != null && entity.getId() != null) {
+               uiComponent.getAttributes().put( entity.getId().toString(), entity);
+        		 return entity.getId().toString();
+            }
+        }
+        if (value instanceof TipoLembrete) {
+        	TipoLembrete entity= (TipoLembrete) value;
+        	if (entity != null && entity.getId() != null) {
+               uiComponent.getAttributes().put( entity.getId().toString(), entity);
+        		 return entity.getId().toString();
+            }
+        }
         return "";
     }
 }

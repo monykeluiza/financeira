@@ -8,12 +8,12 @@
 
 <h:form rendered="#{autenticacaoMb.renderUsuarioLogado}">  
     <p:growl id="messages"/>
-    <p:menubar>
+    <p:menu style="width: 200px">
         <p:menuitem value="Home" icon="fa fa fa-home" action="/pages/dashboard.xhtml"  />
        	<p:menuitem value="Clientes" icon="fa fa fa-address-book" action="/pages/cliente.xhtml" />
        	<p:menuitem value="Contratos" icon="fa fa fa-handshake-o" action="/pages/contrato.xhtml"   />
        	<p:menuitem value="Planilha de Produção" icon="fa fa fa-table" action="/pages/livros.xhtml" rendered="#{false}"  />
-       	<p:menuitem value="Lembretes" icon="fa fa fa-calendar-check-o" action="/pages/lembrete.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
+       	<p:menuitem value="Lembretes" icon="fa fa fa-calendar-check-o" action="/pages/lembrete.xhtml"  />
        	<p:menuitem value="Funcionários" icon="fa fa fa-user-circle" action="/pages/funcionario.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Metas" icon="fa fa fa-tasks" action="/pages/meta.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
        	<p:menuitem value="Usuários" icon="fa fa fa-users" action="/pages/usuarios.xhtml" rendered="#{autenticacaoMb.usuario.admin}"  />
@@ -23,10 +23,7 @@
 	       	<p:menuitem value="Tipos de Operação" icon="fa fa  fa-cog" action="/pages/tipooperacao.xhtml"  />
 	       	<p:menuitem value="Tipos de Lembrete" icon="fa fa fa-list-ul" action="/pages/tipoLembrete.xhtml" />
 	    </p:submenu>
-        <f:facet name="options">
-        	<p:outputLabel value="Bem-vindo(a), #{autenticacaoMb.usuario.login}" rendered="#{autenticacaoMb.renderUsuarioLogado}" style="margin-right: 10px;"  />
-            <p:commandButton value="SAIR" icon="ui-icon-extlink"  action="#{autenticacaoMb.doLogout}"  />
-        </f:facet>
-    </p:menubar>
+        <p:menuitem value="SAIR" icon="ui-icon-extlink"  action="#{autenticacaoMb.doLogout}"  />
+    </p:menu>
 </h:form>
 </ui:composition>

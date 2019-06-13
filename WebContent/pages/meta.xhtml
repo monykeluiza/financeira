@@ -35,6 +35,11 @@
 						        		<f:convertNumber type="currency" />
 						        	</h:outputText>
 						    	</p:column>
+						    	<p:column headerText="Total Digitado" >
+						        	<h:outputText value="#{meta.funcionarioId.totalDigitado}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
+						    	</p:column>
 						    	<p:column headerText="Batida">
 						        	<h:outputText value="#{meta.batida?'SIM':'NÃO'}" />
 						    	</p:column>

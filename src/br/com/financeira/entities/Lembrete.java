@@ -7,6 +7,7 @@ package br.com.financeira.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,12 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "lembrete")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Lembrete.findAll", query = "SELECT l FROM Lembrete l"),
+    @NamedQuery(name = "Lembrete.findAll", query = "SELECT l FROM Lembrete l order by l.id desc"),
     @NamedQuery(name = "Lembrete.findById", query = "SELECT l FROM Lembrete l WHERE l.id = :id"),
     @NamedQuery(name = "Lembrete.findByDescricao", query = "SELECT l FROM Lembrete l WHERE l.descricao = :descricao"),
     @NamedQuery(name = "Lembrete.findByData", query = "SELECT l FROM Lembrete l WHERE l.data = :data"),
     @NamedQuery(name = "Lembrete.findByExecutado", query = "SELECT l FROM Lembrete l WHERE l.executado = :executado"),
-    @NamedQuery(name = "Lembrete.findByBeneficio", query = "SELECT l FROM Lembrete l WHERE l.beneficio = :beneficio")})
+    @NamedQuery(name = "Lembrete.findByFuncionario", query = "SELECT l FROM Lembrete l WHERE l.usuarioId.id = :usuarioId order by l.id desc"),
+    @NamedQuery(name = "Lembrete.findByFuncionarioAtivas", query = "SELECT l FROM Lembrete l WHERE l.usuarioId.id = :usuarioId and l.data BETWEEN :data and :dataFim or l.executado = false order by l.id desc")
+})
 public class Lembrete implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,7 +49,6 @@ public class Lembrete implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 500)
     @Column(name = "descricao")
     private String descricao;
     @Basic(optional = false)
@@ -59,8 +60,6 @@ public class Lembrete implements Serializable {
     @NotNull
     @Column(name = "executado")
     private boolean executado;
-    @Column(name = "beneficio")
-    private Integer beneficio;
     @JoinColumn(name = "tipo_lembrete_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoLembrete tipoLembreteId;
@@ -112,14 +111,6 @@ public class Lembrete implements Serializable {
 
     public void setExecutado(boolean executado) {
         this.executado = executado;
-    }
-
-    public Integer getBeneficio() {
-        return beneficio;
-    }
-
-    public void setBeneficio(Integer beneficio) {
-        this.beneficio = beneficio;
     }
 
     public TipoLembrete getTipoLembreteId() {

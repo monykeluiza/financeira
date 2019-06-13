@@ -60,9 +60,12 @@
 				<p:confirmDialog global="true" width="300px">
         			<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
         			<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-    		</p:confirmDialog>
+    			</p:confirmDialog>
+    			
+    			 <p:layoutUnit position="west" size="220" rendered="#{autenticacaoMb.renderUsuarioLogado}">  
+                    <div id="menu"> <ui:include src="menu.xhtml"/></div>
+                </p:layoutUnit>
                 <p:layoutUnit position="center" rendered="#{autenticacaoMb.renderUsuarioLogado}">
-                		<div id="menu"> <ui:include src="menu.xhtml"/></div>
                     	<div id="content"> <ui:insert name="centro"></ui:insert> </div>
                 </p:layoutUnit> 
                 

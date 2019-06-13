@@ -3,7 +3,12 @@ package br.com.financeira.utils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Util {
 	
@@ -112,5 +117,38 @@ public class Util {
 		m.update(value.getBytes(),0,value.length());
 		return (new BigInteger(1,m.digest()).toString(16));
 	}
+	
+	public static Integer getYearFromDate(Date data) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(data);
+		int year = cal.get(Calendar.YEAR);
+		return year;
+	}
+	
+	public static Integer getMonthFromDate(Date data) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(data);
+		int year = cal.get(Calendar.MONTH);
+		return year;
+	}
+	
+
+	public static Date zerarHoras(Date data) {
+        try {
+        	DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			return format.parse(format.format(data));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return data;
+		}
+    }
+	
+	public static Date addHoraFimDoDia(Date data) {
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        return cal.getTime();
+    }
 
 }

@@ -36,6 +36,10 @@ public class LembreteService extends LogService {
 		return lembreteDao.findByFuncionario(funcionario);
 	}
 	
+	public List<Lembrete> findByFuncionarioAtivas(Funcionario funcionario) {
+		return lembreteDao.findByFuncionarioAtivas(funcionario);
+	}
+	
 	public List<Lembrete> findByFuncionarios(List<Funcionario> funcionarios) {
 		List<Lembrete> lembretes = new ArrayList<Lembrete>();
 		for (Funcionario funcionario2 : funcionarios) {

@@ -8,20 +8,117 @@
 	template="/pages/template.xhtml">
 	<ui:define name="centro">
 		<h:form id="dashboardform">
+			<h:panelGrid columns="2">
+				<p:growl id="msg" redisplay="false" autoUpdate="true" />
+				<h:panelGrid cellpadding="5" columns="8">
+					<p:outputLabel>Ano:</p:outputLabel>
+	       			<p:selectOneMenu value="#{dashboardMB.anoPesquisa}" filter="true" filterMatchMode="contains" effect="fade">
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="2019" itemValue="#{2019}" noSelectionOption="true"/>
+					</p:selectOneMenu>
+					<p:outputLabel>Mês:</p:outputLabel>
+	       			<p:selectOneMenu value="#{dashboardMB.mesPesquisa}" filter="true" filterMatchMode="contains" effect="fade">
+							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Jan" itemValue="#{1}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Fev" itemValue="#{2}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Mar" itemValue="#{3}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Abr" itemValue="#{4}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Mai" itemValue="#{5}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Jun" itemValue="#{6}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Jul" itemValue="#{7}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Ago" itemValue="#{8}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Set" itemValue="#{9}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Out" itemValue="#{10}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Nov" itemValue="#{11}" noSelectionOption="true"/>
+							<f:selectItem itemLabel="Dez" itemValue="#{12}" noSelectionOption="true"/>
+					</p:selectOneMenu>
+						<p:commandButton 
+							icon="ui-icon-search" 
+							update="@all"
+							actionListener="#{dashboardMB.pesquisar}"
+							 />
+				</h:panelGrid>
+			</h:panelGrid>
 			<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
 			<h:panelGrid width="100px" columns="2" style="height:50px;background-color:#0b880e;">
 				<h2 style="font-family: Arial, Helvetica, sans-serif;color:white;">CONTRATOS PAGOS:</h2>
 				<h:outputLabel value="#{dashboardMB.totalContratosPagos}" style="font-family: Arial, Helvetica, sans-serif;color:white;text-align:right;font-size: 400%;margin: 50px;"/>
+				<h:outputLabel value="#{dashboardMB.valorTotalContratosPagos}" style="font-family: Arial, Helvetica, sans-serif;color:white;">
+					<f:convertNumber type="currency" />
+				</h:outputLabel>
 			</h:panelGrid>
 			<h:panelGrid width="100px" columns="2" style="height:50px;background-color:#fdff5d;">
 				<h2 style="font-family: Arial, Helvetica, sans-serif;color:black;">CONTRATOS ANDAMENTO:</h2>
 				<h:outputLabel value="#{dashboardMB.totalContratosAndamento}" style="font-family: Arial, Helvetica, sans-serif;color:Black;text-align:right;font-size: 400%;margin: 50px;"/>
+				<h:outputLabel value="#{dashboardMB.valorTotalContratosAndamento}" style="font-family: Arial, Helvetica, sans-serif;color:Black;">
+					<f:convertNumber type="currency" />
+				</h:outputLabel>
 			</h:panelGrid>
 			<h:panelGrid width="100px" columns="2"  style="height:50px;background-color:#cc121a;">
 				<h2 style="font-family: Arial, Helvetica, sans-serif;color:white;">CONTRATOS CANCELADOS:</h2>
 				<h:outputLabel value="#{dashboardMB.totalContratosCancelados}" style="font-family: Arial, Helvetica, sans-serif;color:white;text-align:right;font-size: 400%;margin: 50px;"/>
+				<h:outputLabel value="#{dashboardMB.valorTotalContratosCancelados}" style="font-family: Arial, Helvetica, sans-serif;color:white;">
+					<f:convertNumber type="currency" />
+				</h:outputLabel>
 			</h:panelGrid>
 		</h:panelGrid>
+		<br />
+		<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
+			<p:dataTable var="funcionario" value="#{dashboardMB.listaFuncionarios}" 
+						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
+                          widgetVar="grid2" emptyMessage="Nenhum registro cadastrado." style="width: 800px;" >
+                         		<p:column headerText="Nome" filterMatchMode="contains" filterBy="#{funcionario.nome}" sortBy="#{funcionario.nome}" style="width: 150px;">
+						        	<h:outputText value="#{funcionario.nome}" />
+						    	</p:column>
+						    	<p:column headerText="Valor Cliente" >
+						        	<h:outputText value="#{funcionario.totalDigitado}" />
+						    	</p:column>
+						    	<p:column headerText="Valor Pago">
+						        	<h:outputText value="#{funcionario.totalPago}" />
+						    	</p:column>
+						    	
+                         </p:dataTable>
+		</h:panelGrid>
+		<br />
+		<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
+			<p:dataTable var="lembrete" value="#{dashboardMB.listaLembretes}"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
+					paginator="true" rows="15" id="grid" widgetVar="grid"
+					emptyMessage="Nenhum registro cadastrado." style="width: 800px;">
+					<f:facet name="header">
+						LEMBRETES
+					</f:facet>
+					<p:column headerText="Descrição" >
+						<h:outputText value="#{lembrete.descricao}" />
+					</p:column>
+					<p:column headerText="Data/Hora" sortBy="#{lembrete.data}">
+						<h:outputText value="#{lembrete.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Tipo">
+						<h:outputText value="#{lembrete.tipoLembreteId.nome}" />
+					</p:column>
+					<p:column headerText="Vencida">
+						<h:outputText
+							value="#{lembreteMb.dataAtual>lembrete.data?'SIM':'NÃO'}" />
+					</p:column>
+					<p:column style="width: 150px;" headerText="Ação">
+						<p:commandButton style="background: #68AFCE;"
+							icon="fa fa fa-check-circle" rendered="${!lembrete.executado}"
+							title="Atualizar status do lembrete para executado."
+							actionListener="#{lembreteMb.executado(lembrete)}"
+							update="grid" >
+							<f:actionListener binding="#{dashboardMB.carregarLista()}" />
+						</p:commandButton>
+
+					</p:column>
+				</p:dataTable>
+		</h:panelGrid>
+		
+		
 		</h:form>
 	</ui:define>
 </ui:composition>

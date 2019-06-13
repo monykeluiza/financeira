@@ -17,5 +17,7 @@ public interface ILembreteDao {
 	
 	public List<Lembrete> findByFuncionario(Funcionario funcionario);
 
+	public List<Lembrete> findByFuncionarioAtivas(Funcionario funcionario);
+
 	
 }

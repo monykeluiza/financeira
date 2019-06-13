@@ -48,12 +48,13 @@ public class ContratoMB implements Serializable {
 				HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 				usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
 			}
-			listaContratos = new ArrayList<Contrato>();
+			
 			contrato = new Contrato();
 			if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_FUNCIONARIO)) {
 				contrato.setFuncionarioId(usuarioLogado.getFuncionarioList().get(0));
 				isFuncionario = true;
 			}
+			listaContratos = new ArrayList<Contrato>();
 			carregarLista();
 		} catch (Exception e) {
 			e.printStackTrace();
