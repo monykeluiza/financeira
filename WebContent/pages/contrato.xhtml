@@ -33,7 +33,7 @@
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
 					paginator="true" rows="15" id="grid" widgetVar="grid"
-					emptyMessage="Nenhum registro cadastrado." style="width: 1300px;">
+					emptyMessage="Nenhum registro cadastrado." >
 					<p:column headerText="Cliente" filterMatchMode="contains"
 						filterBy="#{contrato.clienteId.nome}"
 						sortBy="#{contrato.clienteId.nome}">
@@ -56,8 +56,8 @@
 							<f:convertNumber type="currency" />
 						</h:outputText>
 					</p:column>
-					<p:column headerText="Data" sortBy="#{contrato.dataPrimeiroStatus}">
-						<h:outputText value="#{contrato.dataPrimeiroStatus}">
+					<p:column headerText="Data" sortBy="#{contrato.dataCriacao}">
+						<h:outputText value="#{contrato.dataCriacao}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
 					</p:column>

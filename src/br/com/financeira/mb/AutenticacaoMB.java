@@ -50,7 +50,7 @@ public class AutenticacaoMB implements Serializable {
 		renderUsuarioLogado = true;
 		try {
 			HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-			FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/pages/welcome.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + "/pages/dashboard.xhtml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

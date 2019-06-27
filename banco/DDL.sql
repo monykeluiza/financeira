@@ -263,6 +263,7 @@ CREATE TABLE IF NOT EXISTS `contrato` (
   `cliente_id` INT NOT NULL,
   `data_pgto` DATE NULL,
   `banco_id` INT NOT NULL,
+  `data_criacao` DATE not NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_contrato_tipo_operacao1`
     FOREIGN KEY (`tipo_operacao_id`)

@@ -99,6 +99,9 @@ public class Contrato implements Serializable {
     private String rowStyleClass;
     @Transient
     private Date dataPrimeiroStatus;
+    @Column(name = "data_criacao")
+    @Temporal(TemporalType.DATE)
+    private Date dataCriacao;
 
     public Contrato() {
     }
@@ -285,6 +288,14 @@ public class Contrato implements Serializable {
 
 	public void setDataPrimeiroStatus(Date dataPrimeiroStatus) {
 		this.dataPrimeiroStatus = dataPrimeiroStatus;
+	}
+
+	public Date getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(Date dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
     
 }

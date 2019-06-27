@@ -20,6 +20,9 @@
 						    	<p:column headerText="CPF" filterMatchMode="contains" filterBy="#{funcionario.cpf}" sortBy="#{funcionario.cpf}" style="width: 80px;">
 						        	<h:outputText value="#{funcionario.cpf}" />
 						    	</p:column>
+						    	<p:column headerText="E-mail" filterMatchMode="contains" filterBy="#{funcionario.email}" sortBy="#{funcionario.email}" style="width: 130px;">
+						        	<h:outputText value="#{funcionario.email}" />
+						    	</p:column>
 						    	<p:column headerText="RG" filterMatchMode="contains" filterBy="#{funcionario.rg}" sortBy="#{funcionario.rg}" style="width: 80px;">
 						        	<h:outputText value="#{funcionario.rg}" />
 						    	</p:column>
@@ -28,9 +31,6 @@
 						    	</p:column>
 						    	<p:column headerText="PIS/PASEP" filterMatchMode="contains" filterBy="#{funcionario.pispasep}" sortBy="#{funcionario.pispasep}" style="width: 80px;">
 						        	<h:outputText value="#{funcionario.pispasep}" />
-						    	</p:column>
-						    	<p:column headerText="E-mail" filterMatchMode="contains" filterBy="#{funcionario.email}" sortBy="#{funcionario.email}" style="width: 130px;">
-						        	<h:outputText value="#{funcionario.email}" />
 						    	</p:column>
 						    	<p:column headerText="Perfil" filterMatchMode="contains" filterBy="#{funcionario.usuarioId.perfilId.nome}" sortBy="#{funcionario.usuarioId.perfilId.nome}" style="width: 80px;">
 						        	<h:outputText value="#{funcionario.usuarioId.perfilId.nome}" />
@@ -50,6 +50,9 @@
 						    	</p:column>
 						    	<p:column headerText="Qtd. De Contratos" style="width: 50px;">
 						        	<h:outputText value="#{funcionario.contratoList.size()}" />
+						    	</p:column>
+						    	<p:column headerText="Chefia" style="width: 50px;">
+						        	<h:outputText value="#{funcionario.chefiaId.nome}" />
 						    	</p:column>
 						    	<p:column style="width: 150px;" headerText="Ação">
 									<p:commandButton style="background: #14331D;" 
@@ -82,34 +85,34 @@
 				<p:dialog id="funcionarioDialog" widgetVar="funcionarioDialog" header="Cadastrar novo funcionário" modal="true" appendTo="@(body)" >
      				<h:form id="funcionariocadastroform">
      				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3" cellspacing="3">
-     					<p:outputLabel>Nome:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" required="true" requiredMessage="O campo Nome é de preenchimento obrigatório!" value="#{funcionarioMb.funcionario.nome}"/>
-				     	<p:outputLabel>CPF:</p:outputLabel>
-				     	<p:inputMask mask="999.999.999-99" required="true" requiredMessage="O campo CPF é de preenchimento obrigatório!" value="#{funcionarioMb.funcionario.cpf}"/>
-				     	<p:outputLabel>RG:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{funcionarioMb.funcionario.rg}"/>
-				     	<p:outputLabel>CTPS:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{funcionarioMb.funcionario.ctps}"/>
-				     	<p:outputLabel>PIS/PASEP:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{funcionarioMb.funcionario.pispasep}"/>
-				     	<p:outputLabel>E-mail:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{funcionarioMb.funcionario.email}" required="true" requiredMessage="O campo E-mail é de preenchimento obrigatório!"/>
-				     	<p:outputLabel>Telefone:</p:outputLabel>
-				     	<p:inputMask mask="(99) 9 9999-9999" value="#{funcionarioMb.funcionario.telefone}" required="true" requiredMessage="O campo Telefone é de preenchimento obrigatório!"/>
-				     	<p:outputLabel>Whatsapp:</p:outputLabel>
-				     	<p:inputMask mask="(99) 9 9999-9999" value="#{funcionarioMb.funcionario.whatsapp}" />
-				     	<p:outputLabel>Endereço:</p:outputLabel>
-				     	<p:inputText size="50" maxlength="600" value="#{funcionarioMb.funcionario.endereco}"/>
-				     	<p:outputLabel>Data de Nascimento:</p:outputLabel>
-				     	<p:calendar value="#{funcionarioMb.funcionario.dataNascimento}"
+     					<p:outputLabel for="nome_func">Nome:</p:outputLabel>
+				     	<p:inputText size="50" id="nome_func" maxlength="600" required="true" requiredMessage="O campo Nome é de preenchimento obrigatório!" value="#{funcionarioMb.funcionario.nome}"/>
+				     	<p:outputLabel for="cpf_func">CPF:</p:outputLabel>
+				     	<p:inputMask id="cpf_func" mask="999.999.999-99" required="true" requiredMessage="O campo CPF é de preenchimento obrigatório!" value="#{funcionarioMb.funcionario.cpf}"/>
+				     	<p:outputLabel for="email_func">E-mail:</p:outputLabel>
+				     	<p:inputText id="email_func" size="50" maxlength="600" value="#{funcionarioMb.funcionario.email}" required="true" requiredMessage="O campo E-mail é de preenchimento obrigatório!"/>
+				     	<p:outputLabel for="tel_func">Telefone:</p:outputLabel>
+				     	<p:inputMask id="tel_func" mask="(99) 9 9999-9999" value="#{funcionarioMb.funcionario.telefone}" required="true" requiredMessage="O campo Telefone é de preenchimento obrigatório!"/>
+				     	<p:outputLabel for="nasc_func">Data de Nascimento:</p:outputLabel>
+				     	<p:calendar id="nasc_func" value="#{funcionarioMb.funcionario.dataNascimento}"
 									navigator="true" mask="true" pattern="dd/MM/yyyy"
 									required="true"
 									requiredMessage="O campo Data de Nascimento é de preechimento obrigatório." />
-				     	<p:outputLabel>Data de Início:</p:outputLabel>
-				     	<p:calendar value="#{funcionarioMb.funcionario.dataInicio}"
+				     	<p:outputLabel for="inicio_func">Data de Início:</p:outputLabel>
+				     	<p:calendar id="inicio_func" value="#{funcionarioMb.funcionario.dataInicio}"
 									navigator="true" mask="true" pattern="dd/MM/yyyy"
 									required="true"
 									requiredMessage="O campo Data de Início é de preechimento obrigatório." />
+				     	<p:outputLabel for="rg_func">RG:</p:outputLabel>
+				     	<p:inputText id="rg_func" size="50" maxlength="600" value="#{funcionarioMb.funcionario.rg}"/>
+				     	<p:outputLabel for="ctps_func">CTPS:</p:outputLabel>
+				     	<p:inputText id="ctps_func" size="50" maxlength="600" value="#{funcionarioMb.funcionario.ctps}"/>
+				     	<p:outputLabel for="pis_func">PIS/PASEP:</p:outputLabel>
+				     	<p:inputText id="pis_func" size="50" maxlength="600" value="#{funcionarioMb.funcionario.pispasep}"/>
+				     	<p:outputLabel for="zap_func">Whatsapp:</p:outputLabel>
+				     	<p:inputMask id="zap_func" mask="(99) 9 9999-9999" value="#{funcionarioMb.funcionario.whatsapp}" />
+				     	<p:outputLabel for="end_func">Endereço:</p:outputLabel>
+				     	<p:inputText id="end_func" size="50" maxlength="600" value="#{funcionarioMb.funcionario.endereco}"/>
 				    </h:panelGrid> 
 				    <p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{funcionarioMb.saveOrUpdate}" update=":funcionariopesqform:msg :funcionariopesqform:grid" />
 				   </h:form>

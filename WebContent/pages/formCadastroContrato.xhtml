@@ -23,6 +23,9 @@
 						symbolPosition="p"
 						requiredMessage="O campo Valor Cliente é de preenchimento obrigatório!"
 						value="#{contratoMb.contrato.valorContrato}" />
+						<p:outputLabel>Data da Digitação:</p:outputLabel>
+					<p:calendar value="#{contratoMb.contrato.dataCriacao}"
+						navigator="true" mask="true" pattern="dd/MM/yyyy" />
 					<p:outputLabel>Quantidade de Parcelas:</p:outputLabel>
 					<p:inputNumber value="#{contratoMb.contrato.qtdParcelas}"
 						decimalPlaces="0" />

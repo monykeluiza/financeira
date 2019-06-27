@@ -23,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -81,6 +82,8 @@ public class Usuario implements Serializable {
     private List<Funcionario> funcionarioList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioId")
     private List<Lembrete> lembreteList;
+    @Transient
+    private String email;
 
     public Usuario() {
     }
@@ -204,5 +207,13 @@ public class Usuario implements Serializable {
     public String toString() {
         return "entidades_financeira.Usuario[ id=" + id + " ]";
     }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
     
 }

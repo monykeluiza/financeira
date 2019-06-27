@@ -21,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -38,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Lembrete.findByData", query = "SELECT l FROM Lembrete l WHERE l.data = :data"),
     @NamedQuery(name = "Lembrete.findByExecutado", query = "SELECT l FROM Lembrete l WHERE l.executado = :executado"),
     @NamedQuery(name = "Lembrete.findByFuncionario", query = "SELECT l FROM Lembrete l WHERE l.usuarioId.id = :usuarioId order by l.id desc"),
-    @NamedQuery(name = "Lembrete.findByFuncionarioAtivas", query = "SELECT l FROM Lembrete l WHERE l.usuarioId.id = :usuarioId and l.data BETWEEN :data and :dataFim or l.executado = false order by l.id desc")
+    @NamedQuery(name = "Lembrete.findByFuncionarioAtivas", query = "SELECT l FROM Lembrete l WHERE l.usuarioId.id = :usuarioId and (l.data BETWEEN :data and :dataFim or l.executado = false) order by l.id desc")
 })
 public class Lembrete implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -66,6 +67,8 @@ public class Lembrete implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
+    @Transient
+    private String rowStyleClass;
 
     public Lembrete() {
     }
@@ -159,5 +162,22 @@ public class Lembrete implements Serializable {
     public String toString() {
         return "entidades_financeira.Lembrete[ id=" + id + " ]";
     }
+
+	public String getRowStyleClass() {
+		Date dataAtual = new Date();
+		rowStyleClass = "";
+		if (getData().before(dataAtual) && !getExecutado()) {
+			rowStyleClass = "row_red";
+		} else if (getData().equals(dataAtual) && !getExecutado()) {
+			rowStyleClass = "row_yellow";
+		} else if (getExecutado()) {
+			rowStyleClass = "row_blue";
+		}
+		return rowStyleClass;
+	}
+
+	public void setRowStyleClass(String rowStyleClass) {
+		this.rowStyleClass = rowStyleClass;
+	}
     
 }

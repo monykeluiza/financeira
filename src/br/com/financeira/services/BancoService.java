@@ -17,6 +17,7 @@ public class BancoService extends LogService {
 	private IBancoDao bancoDao;
 	
 	public Banco save(Banco banco, Usuario usuarioLogado) {
+		banco.setAtivo(true);
 		Banco result =  bancoDao.save(banco);
 		Log log = createLog(ACAO_INSERT, result.getId(), usuarioLogado, "Banco");
 		salvar(log);

@@ -7,10 +7,29 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="/pages/template.xhtml">
 	<ui:define name="centro">
+		<style type="text/css">
+			.row_red {
+				background-color: #cc121a !important;
+				background-image: none !important;
+				color: #ffffff !important;
+			}
+			
+			.row_yellow {
+				background-color: #fdff5d !important;
+				background-image: none !important;
+				color: #000000 !important;
+			}
+			
+			.row_blue {
+				background-color: #68AFCE !important;
+				background-image: none !important;
+				color: #ffffff !important;
+			}
+		</style>
 		<h:form id="lembretepesqform">
 			<p:growl id="msg" redisplay="false" autoUpdate="true" />
 			<h:panelGrid cellpadding="10">
-				<p:dataTable var="lembrete" value="#{lembreteMb.listaLembretes}"
+				<p:dataTable var="lembrete" value="#{lembreteMb.listaLembretes}" rowStyleClass="#{lembrete.rowStyleClass}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
 					paginator="true" rows="15" id="grid" widgetVar="grid"
@@ -72,12 +91,12 @@
 						value="#{lembreteMb.lembrete.descricao}" />
 					<p:outputLabel>Data e Hora:</p:outputLabel>
 					<p:calendar value="#{lembreteMb.lembrete.data}" navigator="true"
-						mask="true" pattern="dd/MM/yyyy" required="true"
-						mindate="#{lembreteMb.dataAtual}"
+						mask="true" pattern="dd/MM/yyyy HH:mm:ss" required="true"
+						mindate="#{lembreteMb.dataAtual}" validatorMessage="Data não pode ser de dias anteriores."
 						requiredMessage="O campo Data é de preechimento obrigatório." />
 					<p:outputLabel>Usuário:</p:outputLabel>
 					<p:selectOneMenu value="#{lembreteMb.lembrete.usuarioId.id}"
-						filter="true" filterMatchMode="contains" effect="fade">
+						filter="true" filterMatchMode="contains" effect="fade" required="true" requiredMessage="O campo Usuário é de preechimento obrigatório.">
 						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{usuarioMb.listaUsuarios}" var="item"
@@ -86,7 +105,7 @@
 					</p:selectOneMenu>
 					<p:outputLabel>Tipo:</p:outputLabel>
 					<p:selectOneMenu value="#{lembreteMb.lembrete.tipoLembreteId.id}"
-						filter="true" filterMatchMode="contains" effect="fade">
+						filter="true" filterMatchMode="contains" effect="fade" required="true" requiredMessage="O campo Tipo é de preechimento obrigatório." >
 						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
 							noSelectionOption="true" />
 						<f:selectItems value="#{tipoLembreteMb.listaTipoLembretes}"

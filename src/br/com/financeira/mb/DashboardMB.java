@@ -3,6 +3,7 @@ package br.com.financeira.mb;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,15 +13,19 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import br.com.financeira.entities.Cliente;
+import br.com.financeira.entities.Consolidado;
 import br.com.financeira.entities.Contrato;
 import br.com.financeira.entities.Funcionario;
 import br.com.financeira.entities.Lembrete;
 import br.com.financeira.entities.Perfil;
 import br.com.financeira.entities.StatusContrato;
 import br.com.financeira.entities.Usuario;
+import br.com.financeira.services.ClienteService;
 import br.com.financeira.services.ContratoService;
 import br.com.financeira.services.FuncionarioService;
 import br.com.financeira.services.LembreteService;
+import br.com.financeira.utils.JsfUtil;
 import br.com.financeira.utils.Util;
 
 @ManagedBean(name="dashboardMB")
@@ -40,6 +45,8 @@ public class DashboardMB implements Serializable {
 	private List<Contrato> listaContratos;
 	private List<Lembrete> listaLembretes;
 	private List<Funcionario> listaFuncionarios;
+	private List<Consolidado> listaConsolidados;
+	private List<Cliente> listaClientesAniversarios;
 	private Usuario usuarioLogado;
 	
 	@Inject
@@ -51,45 +58,24 @@ public class DashboardMB implements Serializable {
 	@Inject
 	private FuncionarioService funcionarioService;
 	
+	@Inject
+	private ClienteService clienteService;
+	
 	@PostConstruct
 	public void init() {
 		if (usuarioLogado == null) {
 			HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			usuarioLogado = (Usuario) request.getSession().getAttribute("usuarioLogado");
 		}
-		listaFuncionarios = new ArrayList<Funcionario>();
-		listaContratos = new ArrayList<Contrato>();
 		carregarLista();
+		anoPesquisa = Util.getYearFromDate(new Date());
+		mesPesquisa = Util.getMonthFromDate(new Date());
 		pesquisar();
-		
-		totalContratosPagos = 0;
-		valorTotalContratosPagos = new BigDecimal(0);
-		valorTotalContratosAndamento = new BigDecimal(0);
-		valorTotalContratosCancelados = new BigDecimal(0);
-		for (Contrato contrato : listaContratos) {
-			if (contrato.getUltimoStatus().getId().equals(StatusContrato.PAGO)) {
-				totalContratosPagos++;
-				valorTotalContratosPagos = valorTotalContratosPagos.add(contrato.getValorPago());
-			}
-		}
-		
-		totalContratosAndamento = 0;
-		for (Contrato contrato : listaContratos) {
-			if (contrato.getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO)) {
-				totalContratosAndamento++;
-				valorTotalContratosAndamento = valorTotalContratosAndamento.add(contrato.getValorContrato());
-			}
-		}
-		totalContratosCancelados = 0;
-		for (Contrato contrato : listaContratos) {
-			if (contrato.getUltimoStatus().getId().equals(StatusContrato.CANCELADO)) {
-				totalContratosCancelados++;
-				valorTotalContratosCancelados = valorTotalContratosCancelados.add(contrato.getValorContrato());
-			}
-		}
 	}
 	
 	public void carregarLista() {
+		listaFuncionarios = new ArrayList<Funcionario>();
+		listaContratos = new ArrayList<Contrato>();
 		if (usuarioLogado.getAdmin() || usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_ADMIN)) {
 			listaContratos = contratoService.findAll();
 			listaFuncionarios = funcionarioService.findAll();
@@ -104,6 +90,19 @@ public class DashboardMB implements Serializable {
 			} 
 		}
 		listaLembretes = lembreteService.findByFuncionarioAtivas(usuarioLogado.getFuncionarioList().get(0));
+		listaClientesAniversarios = clienteService.findByAniversariantes();
+		if (!listaLembretes.isEmpty()) {
+			for (Lembrete lembrete : listaLembretes) {
+				if (!lembrete.getExecutado()) {
+					JsfUtil.addWarnMessage("Lembrete: " + lembrete.getDescricao());
+				}
+			}	
+		}
+		if (!listaClientesAniversarios.isEmpty()) {
+			for (Cliente cliente : listaClientesAniversarios) {
+				JsfUtil.addSuccessMessage("Aniversário do Cliente " + cliente.getNome() + "\nTel: " + cliente.getTelefones());
+			}	
+		}
 	}
 	
 	public void pesquisar() {
@@ -114,12 +113,12 @@ public class DashboardMB implements Serializable {
 		for (Contrato contrato : listaContratos) {
 			if (contrato.getUltimoStatus().getId().equals(StatusContrato.PAGO)) {
 				if (mesPesquisa == null) {
-					if (Util.getYearFromDate(contrato.getDataPrimeiroStatus()).equals(anoPesquisa)) {
+					if (Util.getYearFromDate(contrato.getDataPgto()).equals(anoPesquisa)) {
 						totalContratosPagos++;
 						valorTotalContratosPagos = valorTotalContratosPagos.add(contrato.getValorPago());
 					}
 				} else {
-					if (Util.getYearFromDate(contrato.getDataPrimeiroStatus()).equals(anoPesquisa) && Util.getMonthFromDate(contrato.getDataPrimeiroStatus()).equals(mesPesquisa)) {
+					if (Util.getYearFromDate(contrato.getDataPgto()).equals(anoPesquisa) && Util.getMonthFromDate(contrato.getDataPgto()).equals(mesPesquisa)) {
 						totalContratosPagos++;
 						valorTotalContratosPagos = valorTotalContratosPagos.add(contrato.getValorPago());
 					}
@@ -130,35 +129,66 @@ public class DashboardMB implements Serializable {
 		totalContratosAndamento = 0;
 		for (Contrato contrato : listaContratos) {
 			if (contrato.getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO)) {
-				if (mesPesquisa == null) {
-					if (Util.getYearFromDate(contrato.getDataPrimeiroStatus()).equals(anoPesquisa)) {
 						totalContratosAndamento++;
 						valorTotalContratosAndamento = valorTotalContratosAndamento.add(contrato.getValorContrato());
-					}
-				} else {
-					if (Util.getYearFromDate(contrato.getDataPrimeiroStatus()).equals(anoPesquisa) && Util.getMonthFromDate(contrato.getDataPrimeiroStatus()).equals(mesPesquisa)) {
-						totalContratosAndamento++;
-						valorTotalContratosAndamento = valorTotalContratosAndamento.add(contrato.getValorContrato());
-					}
-				}
 			}
 		}
 		totalContratosCancelados = 0;
 		for (Contrato contrato : listaContratos) {
-			if (contrato.getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO)) {
+			if (contrato.getUltimoStatus().getId().equals(StatusContrato.CANCELADO)) {
 				if (mesPesquisa == null) {
-					if (Util.getYearFromDate(contrato.getDataPrimeiroStatus()).equals(anoPesquisa)) {
+					if (Util.getYearFromDate(contrato.getDataCriacao()).equals(anoPesquisa)) {
 						totalContratosCancelados++;
 						valorTotalContratosCancelados = valorTotalContratosCancelados.add(contrato.getValorContrato());
 					}
 				} else {
-					if (Util.getYearFromDate(contrato.getDataPrimeiroStatus()).equals(anoPesquisa) && Util.getMonthFromDate(contrato.getDataPrimeiroStatus()).equals(mesPesquisa)) {
+					if (Util.getYearFromDate(contrato.getDataCriacao()).equals(anoPesquisa) && Util.getMonthFromDate(contrato.getDataCriacao()).equals(mesPesquisa)) {
 						totalContratosCancelados++;
 						valorTotalContratosCancelados = valorTotalContratosCancelados.add(contrato.getValorContrato());
 					}
 				}
 			}
 		}
+		pesquisarConsolidado();
+		
+	}
+
+	private void pesquisarConsolidado() {
+		listaConsolidados = new ArrayList<Consolidado>();
+		for (Funcionario funcionario : listaFuncionarios) {
+			Consolidado consolidado = new Consolidado();
+			if (funcionario.getDataSaida() == null) {
+				consolidado.setFuncioario(funcionario);
+				consolidado.setListaContratos(funcionario.getContratoList());
+				BigDecimal totalValorDigitado = new BigDecimal(0);
+				BigDecimal totalValorPago = new BigDecimal(0);
+				for (Contrato contrato : funcionario.getContratoList()) {
+					if (mesPesquisa == null) {
+						if (Util.getYearFromDate(contrato.getDataCriacao()).equals(anoPesquisa) && !contrato.getUltimoStatus().getId().equals(StatusContrato.CANCELADO)) {
+							totalValorDigitado = totalValorDigitado.add(contrato.getValorContrato());
+							if (contrato.getValorPago() != null) {
+								totalValorPago = totalValorPago.add(contrato.getValorPago());
+							}
+						}
+					} else {
+						if (contrato.getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO) && 
+								Util.getYearFromDate(contrato.getDataCriacao())>=anoPesquisa && 
+								Util.getMonthFromDate(contrato.getDataCriacao())>=mesPesquisa) {
+							totalValorDigitado = totalValorDigitado.add(contrato.getValorContrato());
+						}
+						if (contrato.getValorPago() != null) {
+							if (Util.getYearFromDate(contrato.getDataPgto()).equals(anoPesquisa) && Util.getMonthFromDate(contrato.getDataPgto()).equals(mesPesquisa)) {
+									totalValorPago = totalValorPago.add(contrato.getValorPago());
+							}
+						}
+					}
+				}
+				consolidado.setTotalDigitado(totalValorDigitado);
+				consolidado.setTotalPago(totalValorPago);
+				listaConsolidados.add(consolidado);
+			}
+		}
+		
 	}
 
 	public int getTotalContratosPagos() {
@@ -269,5 +299,22 @@ public class DashboardMB implements Serializable {
 	public void setListaFuncionarios(List<Funcionario> listaFuncionarios) {
 		this.listaFuncionarios = listaFuncionarios;
 	}
+
+	public List<Cliente> getListaClientesAniversarios() {
+		return listaClientesAniversarios;
+	}
+
+	public void setListaClientesAniversarios(List<Cliente> listaClientesAniversarios) {
+		this.listaClientesAniversarios = listaClientesAniversarios;
+	}
+
+	public List<Consolidado> getListaConsolidados() {
+		return listaConsolidados;
+	}
+
+	public void setListaConsolidados(List<Consolidado> listaConsolidados) {
+		this.listaConsolidados = listaConsolidados;
+	}
+
 	 
 }

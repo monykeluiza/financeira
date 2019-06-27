@@ -3,6 +3,7 @@ package br.com.financeira.mb;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -106,6 +107,7 @@ public class ContratoMB implements Serializable {
 			contrato.setFuncionarioId(usuarioLogado.getFuncionarioList().get(0));
 			isFuncionario = true;
 		}
+		contrato.setDataCriacao(new Date());
 	}
 	
 	public void limparSetandoCliente(Cliente cliente) {

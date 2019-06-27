@@ -128,8 +128,8 @@ public class Util {
 	public static Integer getMonthFromDate(Date data) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(data);
-		int year = cal.get(Calendar.MONTH);
-		return year;
+		int month = cal.get(Calendar.MONTH) + 1;
+		return month;
 	}
 	
 

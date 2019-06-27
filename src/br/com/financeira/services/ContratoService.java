@@ -27,6 +27,9 @@ public class ContratoService extends LogService {
 	@Inject
 	private IContratoHasStatusContratoDao statusDao;
 	
+	@Inject
+	private MetaService metaService;
+	
 	public Contrato save(Contrato contrato, Usuario usuarioLogado) {
 		Contrato result =  contratoDao.save(contrato);
 		Log log = createLog(ACAO_INSERT, result.getId(), usuarioLogado, "Contrato");

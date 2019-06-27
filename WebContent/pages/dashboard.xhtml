@@ -7,9 +7,36 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	template="/pages/template.xhtml">
 	<ui:define name="centro">
+		<style type="text/css">
+			.row_red {
+				background-color: #cc121a !important;
+				background-image: none !important;
+				color: #ffffff !important;
+			}
+			
+			.row_yellow {
+				background-color: #fdff5d !important;
+				background-image: none !important;
+				color: #000000 !important;
+			}
+			
+			.row_blue {
+				background-color: #68AFCE !important;
+				background-image: none !important;
+				color: #ffffff !important;
+			}
+			
+			/* #lembretes {
+				background: url(/financeira/resources/imagens/aniversario.png) no-repeat;
+			} */
+			
+		</style>
 		<h:form id="dashboardform">
 			<h:panelGrid columns="2">
-				<p:growl id="msg" redisplay="false" autoUpdate="true" />
+				<p:growl id="msg" redisplay="false" autoUpdate="true"  />
+				<p:growl id="lembretes" keepAlive="true" sticky="true"  autoUpdate="true"  />
+				<p:remoteCommand id="rcomerror" name="showError" process="@this"  autoRun="true"
+                         actionListener="#{dashboardMB.carregarLista}" update="lembretes" /> 
 				<h:panelGrid cellpadding="5" columns="8">
 					<p:outputLabel>Ano:</p:outputLabel>
 	       			<p:selectOneMenu value="#{dashboardMB.anoPesquisa}" filter="true" filterMatchMode="contains" effect="fade">
@@ -64,28 +91,35 @@
 		</h:panelGrid>
 		<br />
 		<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
-			<p:dataTable var="funcionario" value="#{dashboardMB.listaFuncionarios}" 
+			<p:dataTable var="consolidado" value="#{dashboardMB.listaConsolidados}" 
 						 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" paginator="true" rows="15" id="grid" 
                           widgetVar="grid2" emptyMessage="Nenhum registro cadastrado." style="width: 800px;" >
+                          		<f:facet name="header">
+									PRODUÇÃO
+								</f:facet>
                          		<p:column headerText="Nome" filterMatchMode="contains" filterBy="#{funcionario.nome}" sortBy="#{funcionario.nome}" style="width: 150px;">
-						        	<h:outputText value="#{funcionario.nome}" />
+						        	<h:outputText value="#{consolidado.funcionario.nome}" />
 						    	</p:column>
 						    	<p:column headerText="Valor Cliente" >
-						        	<h:outputText value="#{funcionario.totalDigitado}" />
+						        	<h:outputText value="#{consolidado.totalDigitado}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
 						    	</p:column>
 						    	<p:column headerText="Valor Pago">
-						        	<h:outputText value="#{funcionario.totalPago}" />
+						        	<h:outputText value="#{consolidado.totalPago}" >
+						        		<f:convertNumber type="currency" />
+						        	</h:outputText>
 						    	</p:column>
 						    	
                          </p:dataTable>
 		</h:panelGrid>
 		<br />
 		<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
-			<p:dataTable var="lembrete" value="#{dashboardMB.listaLembretes}"
+			<p:dataTable var="lembrete" value="#{dashboardMB.listaLembretes}" rowStyleClass="#{lembrete.rowStyleClass}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
-					paginator="true" rows="15" id="grid" widgetVar="grid"
+					paginator="true" rows="15" id="grid4" widgetVar="grid4"
 					emptyMessage="Nenhum registro cadastrado." style="width: 800px;">
 					<f:facet name="header">
 						LEMBRETES
@@ -105,15 +139,45 @@
 						<h:outputText
 							value="#{lembreteMb.dataAtual>lembrete.data?'SIM':'NÃO'}" />
 					</p:column>
+					<p:column headerText="Executada">
+						<h:outputText
+							value="#{lembrete.executado?'SIM':'NÃO'}" />
+					</p:column>
 					<p:column style="width: 150px;" headerText="Ação">
 						<p:commandButton style="background: #68AFCE;"
 							icon="fa fa fa-check-circle" rendered="${!lembrete.executado}"
 							title="Atualizar status do lembrete para executado."
 							actionListener="#{lembreteMb.executado(lembrete)}"
-							update="grid" >
+							update="grid4" >
 							<f:actionListener binding="#{dashboardMB.carregarLista()}" />
 						</p:commandButton>
-
+					</p:column>
+				</p:dataTable>
+		</h:panelGrid>
+		<br />
+		<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
+			<p:dataTable var="cliente" value="#{dashboardMB.listaClientesAniversarios}" 
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
+					paginator="true" rows="15" id="grid5" widgetVar="grid5"
+					emptyMessage="Nenhum registro cadastrado." style="width: 800px;">
+					<f:facet name="header">
+						ANIVERSARIANTES 
+					</f:facet>
+					<p:column headerText="Nome">
+						<h:outputText value="#{cliente.nome}" />
+					</p:column>
+					<p:column headerText="E-mail" >
+						<h:outputText value="#{cliente.email}" />
+					</p:column>
+					<p:column headerText="Telefone" >
+						<h:outputText value="#{cliente.telefones}" />
+					</p:column>
+					<p:column headerText="Whatsapp" >
+						<h:outputText value="#{cliente.whatsapp}" />
+					</p:column>
+					<p:column headerText="Responsável" >
+						<h:outputText value="#{cliente.funcionarioId.nome}" />
 					</p:column>
 				</p:dataTable>
 		</h:panelGrid>

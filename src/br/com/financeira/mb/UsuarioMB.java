@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import br.com.financeira.entities.Perfil;
+import br.com.financeira.entities.ResetSenha;
 import br.com.financeira.entities.Usuario;
 import br.com.financeira.services.UsuarioService;
 import br.com.financeira.utils.JsfUtil;
@@ -26,6 +27,9 @@ public class UsuarioMB implements Serializable{
 	@Inject
 	private UsuarioService service;
 	private Usuario usuarioLogado;
+	private Usuario usuarioRedefinirSenha;
+	private ResetSenha resetSenha;
+	private String emailEsqueci;
 	
 	@PostConstruct
 	public void init() {
@@ -37,8 +41,15 @@ public class UsuarioMB implements Serializable{
 	}
 	
 	public void carregarLista() {
-		listaUsuarios = service.findAll();
-//		PrimeFaces.current().ajax().update("usuariopesqform:grid");
+		if (usuarioLogado != null) {
+			if (usuarioLogado.getAdmin() || usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_ADMIN)) {
+				listaUsuarios = service.findAll();
+			} else {
+				listaUsuarios = new ArrayList<Usuario>();
+				listaUsuarios.add(service.findById(usuarioLogado));
+			}
+		}
+		
 	}
 	
 	public void ativar(Usuario usuario) {
@@ -89,6 +100,38 @@ public class UsuarioMB implements Serializable{
 	public void limpar() {
 		usuario = new Usuario();
 	}
+	
+	public String redefinirSenha() {
+		try {
+			String msg = service.redefinirSenha(usuarioRedefinirSenha, resetSenha, usuarioLogado);
+			if (msg == null) {
+				JsfUtil.closeModal("senhaDialog");
+				return "";
+			} else {
+				JsfUtil.addErrorMessage(msg);
+				return "";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JsfUtil.addFatalMessage();
+			return "";
+		}
+	}
+	
+	public void esqueciSenha() {
+		try {
+			 String msgErro = service.esqueciSenha(usuario);
+			 if (msgErro != null) {
+				 JsfUtil.addErrorMessage(msgErro);
+			 } else {
+				 JsfUtil.closeModal("esqueciSenhaDialog");
+				 JsfUtil.addSuccessMessage("Sua senha foi redefinida. Verifique seu e-mail e siga as instruções para acesso.");
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+			JsfUtil.addFatalMessage();
+		}
+	}
 
 	public Usuario getUsuario() {
 		return usuario;
@@ -104,5 +147,37 @@ public class UsuarioMB implements Serializable{
 
 	public void setListaUsuarios(List<Usuario> listaUsuarios) {
 		this.listaUsuarios = listaUsuarios;
+	}
+
+	public Usuario getUsuarioLogado() {
+		return usuarioLogado;
+	}
+
+	public void setUsuarioLogado(Usuario usuarioLogado) {
+		this.usuarioLogado = usuarioLogado;
+	}
+
+	public Usuario getUsuarioRedefinirSenha() {
+		return usuarioRedefinirSenha;
+	}
+
+	public void setUsuarioRedefinirSenha(Usuario usuarioRedefinirSenha) {
+		this.usuarioRedefinirSenha = usuarioRedefinirSenha;
+	}
+
+	public ResetSenha getResetSenha() {
+		return resetSenha;
+	}
+
+	public void setResetSenha(ResetSenha resetSenha) {
+		this.resetSenha = resetSenha;
+	}
+
+	public String getEmailEsqueci() {
+		return emailEsqueci;
+	}
+
+	public void setEmailEsqueci(String emailEsqueci) {
+		this.emailEsqueci = emailEsqueci;
 	}
 }

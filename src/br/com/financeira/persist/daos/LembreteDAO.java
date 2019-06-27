@@ -62,7 +62,7 @@ public class LembreteDAO extends DataAccess<Lembrete>  implements ILembreteDao{
 	@SuppressWarnings("unchecked")
 	public List<Lembrete> findByFuncionarioAtivas(Funcionario funcionario) {
 		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("usuarioId", funcionario.getId());
+		parametros.put("usuarioId", funcionario.getUsuarioId().getId());
 		parametros.put("data", Util.zerarHoras(new Date()));
 		parametros.put("dataFim", Util.addHoraFimDoDia(new Date()));
 		return super.findWithNamedQuery("Lembrete.findByFuncionarioAtivas", parametros);

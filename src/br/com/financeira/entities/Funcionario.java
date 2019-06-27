@@ -341,7 +341,7 @@ public class Funcionario implements Serializable {
 		}
 		return totalPago;
 	}
-
+	
 	public void setTotalPago(BigDecimal totalPago) {
 		this.totalPago = totalPago;
 	}

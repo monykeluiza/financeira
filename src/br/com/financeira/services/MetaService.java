@@ -52,8 +52,6 @@ public class MetaService extends LogService {
 	public List<Meta> findAll() {
 		return metaDao.findAll();
 	}
-
-	
 	
 
 }

@@ -57,6 +57,10 @@ public class ClienteService extends LogService {
 	public List<Cliente> findAll() {
 		return dao.findAll();
 	}
+	
+	public List<Cliente> findByAniversariantes() {
+		return dao.findByAniversariantes();
+	}
 
 	
 	

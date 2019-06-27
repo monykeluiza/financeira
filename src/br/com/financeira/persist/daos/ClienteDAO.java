@@ -1,5 +1,6 @@
 package br.com.financeira.persist.daos;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import br.com.financeira.entities.Cliente;
 import br.com.financeira.entities.Funcionario;
 import br.com.financeira.persist.DataAccess;
 import br.com.financeira.persist.ifs.IClienteDao;
+import br.com.financeira.utils.Util;
 
 @Stateless
 public class ClienteDAO extends DataAccess<Cliente>  implements IClienteDao{
@@ -55,6 +57,13 @@ public class ClienteDAO extends DataAccess<Cliente>  implements IClienteDao{
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("idFuncionario", funcionario.getId());
 		return super.findWithNamedQuery("Cliente.findByFuncionario", parametros);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Cliente> findByAniversariantes() {
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("dataNasc", Util.zerarHoras(new Date()));
+		return super.findWithNamedQuery("Cliente.findByDataNasc", parametros);
 	}
 
 }
