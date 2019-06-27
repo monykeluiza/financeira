@@ -62,8 +62,6 @@ public class Meta implements Serializable {
     @Column(name = "data_alcance")
     @Temporal(TemporalType.DATE)
     private Date dataAlcance;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "data_vencimento")
     @Temporal(TemporalType.DATE)
     private Date dataVencimento;

@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `meta` (
   `valor` DECIMAL(13,2) NULL,
   `batida` TINYINT(1) NOT NULL DEFAULT 0,
   `data_alcance` DATE NULL,
-  `data_vencimento` DATE NOT NULL,
+  `data_vencimento` DATE NULL,
   `funcionario_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_meta_funcionario1`

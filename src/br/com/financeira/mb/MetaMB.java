@@ -62,9 +62,14 @@ public class MetaMB implements Serializable {
 	public void saveOrUpdate() {
 		try {
 			if (meta.getId() == null) {
-				meta = service.save(meta, usuarioLogado);
-				JsfUtil.addSuccessMessage("Meta cadastrado com sucesso.");
-				carregarLista();
+				List<Meta> metas = service.findByFuncionario(usuarioLogado.getFuncionarioList().get(0));
+				if (metas.isEmpty()) {
+					meta = service.save(meta, usuarioLogado);
+					JsfUtil.addSuccessMessage("Meta cadastrado com sucesso.");
+					carregarLista();
+				} else {
+					JsfUtil.addErrorMessage("Funcionário já possui meta ativa cadastrada.");
+				}
 			} else {
 				meta = service.update(meta, usuarioLogado);
 				JsfUtil.addSuccessMessage("Meta atualizado com sucesso.");
