@@ -1,11 +1,14 @@
 package br.com.financeira.services;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import br.com.financeira.entities.Contrato;
 import br.com.financeira.entities.Funcionario;
 import br.com.financeira.entities.Log;
 import br.com.financeira.entities.Meta;
@@ -32,8 +35,17 @@ public class MetaService extends LogService {
 		return result;
 	}
 	
+	private Meta update(Meta meta) {
+		Meta result = metaDao.update(meta);
+		return result;
+	}
+	
 	public List<Meta> findByFuncionario(Funcionario funcionario) {
 		return metaDao.findByFuncionario(funcionario);
+	}
+	
+	public List<Meta> findByFuncionarioAtivas(Funcionario funcionario) {
+		return metaDao.findByFuncionarioAtivas(funcionario);
 	}
 	
 	public List<Meta> findByFuncionarios(List<Funcionario> funcionarios) {
@@ -51,6 +63,23 @@ public class MetaService extends LogService {
 	
 	public List<Meta> findAll() {
 		return metaDao.findAll();
+	}
+	
+	public void verificarAtualizacaoMeta(Funcionario funcionario) {
+		List<Meta> metas = findByFuncionarioAtivas(funcionario);
+		for (Meta meta : metas) {
+			BigDecimal totalContrato = new BigDecimal(0);
+			for (Contrato contrato : funcionario.getContratoList()) {
+				if (contrato.getDataCriacao().after(meta.getDataInicio()) && contrato.getDataCriacao().before(meta.getDataVencimento())) {
+					totalContrato.add(contrato.getValorCliente());
+				}
+			}
+			if (totalContrato.compareTo(meta.getValor()) >= 0) {
+				meta.setBatida(true);
+				meta.setDataAlcance(new Date());
+				update(meta);
+			}
+		}
 	}
 	
 

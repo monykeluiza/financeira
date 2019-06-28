@@ -156,16 +156,21 @@
 		</h:panelGrid>
 		<br />
 		<h:panelGrid columns="3" cellpadding="3" cellspacing="3">
-			<p:dataTable var="cliente" value="#{dashboardMB.listaClientesAniversarios}" 
+			<p:dataTable var="cliente" value="#{dashboardMB.listaClientesAniversarios}" rowStyleClass="#{cliente.rowStyleClass}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
 					paginator="true" rows="15" id="grid5" widgetVar="grid5"
 					emptyMessage="Nenhum registro cadastrado." style="width: 800px;">
 					<f:facet name="header">
-						ANIVERSARIANTES 
+						ANIVERSARIANTES DO MÊS ATUAL
 					</f:facet>
 					<p:column headerText="Nome">
 						<h:outputText value="#{cliente.nome}" />
+					</p:column>
+					<p:column headerText="Data Nasc.">
+						<h:outputText value="#{cliente.dataNasc}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 					</p:column>
 					<p:column headerText="E-mail" >
 						<h:outputText value="#{cliente.email}" />

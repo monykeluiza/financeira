@@ -62,7 +62,8 @@ public class ClienteDAO extends DataAccess<Cliente>  implements IClienteDao{
 	@SuppressWarnings("unchecked")
 	public List<Cliente> findByAniversariantes() {
 		Map<String, Object> parametros = new HashMap<String, Object>();
-		parametros.put("dataNasc", Util.zerarHoras(new Date()));
+		parametros.put("mes", Util.getMonthFromDate(new Date()));
+//		parametros.put("dia", Util.getDayFromDate(new Date()));
 		return super.findWithNamedQuery("Cliente.findByDataNasc", parametros);
 	}
 

@@ -16,5 +16,7 @@ public interface IMetaDao {
 	public List<Meta> findByFuncionario(Funcionario funcionario);
 	
 	public Meta findById(Meta meta);
+
+	List<Meta> findByFuncionarioAtivas(Funcionario funcionario);
 	
 }

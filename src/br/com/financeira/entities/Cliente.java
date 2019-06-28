@@ -23,10 +23,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import br.com.financeira.utils.Util;
 
 /**
  *
@@ -41,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cliente.findByFuncionario", query = "SELECT c FROM Cliente c WHERE c.funcionarioId.id = :idFuncionario order by c.id desc"),
     @NamedQuery(name = "Cliente.findByNome", query = "SELECT c FROM Cliente c WHERE c.nome = :nome"),
     @NamedQuery(name = "Cliente.findByCpf", query = "SELECT c FROM Cliente c WHERE c.cpf = :cpf"),
-    @NamedQuery(name = "Cliente.findByDataNasc", query = "SELECT c FROM Cliente c WHERE c.dataNasc = :dataNasc"),
+    @NamedQuery(name = "Cliente.findByDataNasc", query = "SELECT c FROM Cliente c WHERE function('month',c.dataNasc) = :mes"),
     @NamedQuery(name = "Cliente.findByEmail", query = "SELECT c FROM Cliente c WHERE c.email = :email"),
     @NamedQuery(name = "Cliente.findByTelefones", query = "SELECT c FROM Cliente c WHERE c.telefones = :telefones"),
     @NamedQuery(name = "Cliente.findByWhatsapp", query = "SELECT c FROM Cliente c WHERE c.whatsapp = :whatsapp"),
@@ -100,6 +103,8 @@ public class Cliente implements Serializable {
     private List<Contato> contatoList;
     @Column(name = "beneficio")
     private Integer beneficio;
+    @Transient
+    private String rowStyleClass;
 
     public Cliente() {
     }
@@ -267,6 +272,17 @@ public class Cliente implements Serializable {
 
 	public void setBeneficio(Integer beneficio) {
 		this.beneficio = beneficio;
+	}
+
+	public String getRowStyleClass() {
+		if (Util.getDayFromDate(new Date()).equals(Util.getDayFromDate(getDataNasc()))) {
+			return "row_blue";
+		}
+		return rowStyleClass;
+	}
+
+	public void setRowStyleClass(String rowStyleClass) {
+		this.rowStyleClass = rowStyleClass;
 	}
     
 }

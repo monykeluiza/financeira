@@ -41,6 +41,7 @@ public class DashboardMB implements Serializable {
 	private BigDecimal valorTotalContratosCancelados;
 	private Integer anoPesquisa;
 	private Integer mesPesquisa;
+	private Integer mesAtual;
 	
 	private List<Contrato> listaContratos;
 	private List<Lembrete> listaLembretes;
@@ -70,6 +71,7 @@ public class DashboardMB implements Serializable {
 		carregarLista();
 		anoPesquisa = Util.getYearFromDate(new Date());
 		mesPesquisa = Util.getMonthFromDate(new Date());
+		mesAtual = Util.getMonthFromDate(new Date());
 		pesquisar();
 	}
 	
@@ -100,7 +102,9 @@ public class DashboardMB implements Serializable {
 		}
 		if (!listaClientesAniversarios.isEmpty()) {
 			for (Cliente cliente : listaClientesAniversarios) {
-				JsfUtil.addSuccessMessage("Aniversário do Cliente " + cliente.getNome() + "\nTel: " + cliente.getTelefones());
+				if (Util.getDayFromDate(new Date()).equals(Util.getDayFromDate(cliente.getDataNasc()))) {
+					JsfUtil.addSuccessMessage("Aniversário do Cliente " + cliente.getNome() + "\nTel: " + cliente.getTelefones());
+				}
 			}	
 		}
 	}
@@ -314,6 +318,14 @@ public class DashboardMB implements Serializable {
 
 	public void setListaConsolidados(List<Consolidado> listaConsolidados) {
 		this.listaConsolidados = listaConsolidados;
+	}
+
+	public Integer getMesAtual() {
+		return mesAtual;
+	}
+
+	public void setMesAtual(Integer mesAtual) {
+		this.mesAtual = mesAtual;
 	}
 
 	 

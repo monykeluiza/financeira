@@ -132,6 +132,13 @@ public class Util {
 		return month;
 	}
 	
+	public static Integer getDayFromDate(Date data) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(data);
+		int month = cal.get(Calendar.DAY_OF_MONTH);
+		return month;
+	}
+	
 
 	public static Date zerarHoras(Date data) {
         try {

@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Meta.findByBatida", query = "SELECT m FROM Meta m WHERE m.batida = :batida"),
     @NamedQuery(name = "Meta.findByDataAlcance", query = "SELECT m FROM Meta m WHERE m.dataAlcance = :dataAlcance"),
     @NamedQuery(name = "Meta.findByFuncionario", query = "SELECT m FROM Meta m WHERE m.funcionarioId.id = :idFuncionario order by m.id desc"),
+    @NamedQuery(name = "Meta.findByFuncionarioAtiva", query = "SELECT m FROM Meta m WHERE m.funcionarioId.id = :idFuncionario and m.batida = false order by m.id desc"),
     @NamedQuery(name = "Meta.findByDataVencimento", query = "SELECT m FROM Meta m WHERE m.dataVencimento = :dataVencimento")})
 public class Meta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -65,6 +66,9 @@ public class Meta implements Serializable {
     @Column(name = "data_vencimento")
     @Temporal(TemporalType.DATE)
     private Date dataVencimento;
+    @Column(name = "data_inicio")
+    @Temporal(TemporalType.DATE)
+    private Date dataInicio;
     @JoinColumn(name = "funcionario_id", referencedColumnName = "id")
     @ManyToOne
     private Funcionario funcionarioId;
@@ -164,6 +168,14 @@ public class Meta implements Serializable {
 
 	public void setFuncionarioId(Funcionario funcionarioId) {
 		this.funcionarioId = funcionarioId;
+	}
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
 	}
     
 }

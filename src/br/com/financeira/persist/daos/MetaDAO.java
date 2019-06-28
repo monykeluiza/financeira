@@ -56,5 +56,13 @@ public class MetaDAO extends DataAccess<Meta>  implements IMetaDao{
 		parametros.put("idFuncionario", funcionario.getId());
 		return super.findWithNamedQuery("Meta.findByFuncionario", parametros);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Meta> findByFuncionarioAtivas(Funcionario funcionario) {
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("idFuncionario", funcionario.getId());
+		return super.findWithNamedQuery("Meta.findByFuncionarioAtiva", parametros);
+	}
 
 }

@@ -35,6 +35,7 @@ public class ContratoService extends LogService {
 		Log log = createLog(ACAO_INSERT, result.getId(), usuarioLogado, "Contrato");
 		salvar(log);
 		updateStatus(result, usuarioLogado, StatusContrato.ANDAMENTO);
+		metaService.verificarAtualizacaoMeta(contrato.getFuncionarioId());
 		return result;	
 	}
 	

@@ -25,6 +25,16 @@
 						    	<p:column headerText="Funcionario" >
 						        	<h:outputText value="#{meta.funcionarioId.nome}" />
 						    	</p:column>
+						    	<p:column headerText="Data De Início" >
+						        	<h:outputText value="#{meta.dataInicio}" >
+						        		<f:convertDateTime pattern="dd/MM/yyyy" />
+						        	</h:outputText>
+						    	</p:column>
+						    	<p:column headerText="Data De Vencimento" >
+						        	<h:outputText value="#{meta.dataVencimento}" >
+						        		<f:convertDateTime pattern="dd/MM/yyyy" />
+						        	</h:outputText>
+						    	</p:column>
 						    	<p:column headerText="Batida">
 						        	<h:outputText value="#{meta.batida?'SIM':'NÃO'}" />
 						    	</p:column>
@@ -58,7 +68,13 @@
 				     	<p:selectOneMenu value="#{metaMb.meta.funcionarioId.id}" filter="true" filterMatchMode="contains" effect="fade" >
 							<f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
 							<f:selectItems value="#{funcionarioMb.listaFuncionarios}" var="item" itemValue="#{item.id}" itemLabel="#{item.nome}"/>
-						</p:selectOneMenu>		
+						</p:selectOneMenu>
+						<p:outputLabel>Data Início:</p:outputLabel>
+						<p:calendar value="#{metaMb.meta.dataInicio}"
+						navigator="true" mask="true" pattern="dd/MM/yyyy" required="true" requiredMessage="O campo Data de Início é obrigatório" />
+						<p:outputLabel>Data Fim:</p:outputLabel>
+						<p:calendar value="#{metaMb.meta.dataVencimento}"
+							navigator="true" mask="true" pattern="dd/MM/yyyy" required="true" requiredMessage="O campo Data Fim é obrigatório" />		
 				    </h:panelGrid> 
 				    <p:commandButton style="float:right;" process="@form" value="Cadastrar" icon="ui-icon-circle-check" action="#{metaMb.saveOrUpdate}" update=":metapesqform:msg :metapesqform:grid" />
 				   </h:form>
