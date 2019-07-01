@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import br.com.financeira.entities.Usuario;
 import br.com.financeira.persist.ifs.IUsuario;
+import br.com.financeira.utils.Util;
 
 @Stateless
 public class AutenticacaoService {
@@ -17,13 +18,16 @@ public class AutenticacaoService {
 	public Usuario autenticar(Usuario usuario) throws Exception {
 		Usuario usuarioBanco = usuarioDao.findByLoginAtivo(usuario);
 		if (usuarioBanco != null && usuarioBanco.getId() != null) {
-			if (usuarioBanco.getDataUltimoAcesso() == null) {
-				usuario.setId(usuarioBanco.getId());
+			if (!Util.getMD5String(usuario.getSenha()).equals(usuarioBanco.getSenha())) {
+				throw new Exception("Senha não confere!");
+			} else {
+				if (usuarioBanco.getDataUltimoAcesso() == null) {
+					usuario.setId(usuarioBanco.getId());
+				}
+				usuarioBanco.setDataUltimoAcesso(new Date());
+				usuarioDao.update(usuarioBanco);
+				return usuarioBanco;
 			}
-//			usuarioBanco.setNome(usuario.getNome());
-			usuarioBanco.setDataUltimoAcesso(new Date());
-			usuarioDao.update(usuarioBanco);
-			return usuarioBanco;
 		} else {
 			throw new Exception("Usuário não tem permissão para acesso ao sistema!");
 		}
