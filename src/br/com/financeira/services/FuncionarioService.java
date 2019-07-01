@@ -21,7 +21,7 @@ public class FuncionarioService extends LogService {
 	
 	
 	public Funcionario save(Funcionario funcionario, Usuario usuarioLogado) {
-		funcionario.setChefiaId(usuarioLogado.getFuncionarioList().get(0));
+		funcionario.setChefiaId(null);
 		funcionario.setUsuarioId(userService.criarUsuarioParaFuncionario(funcionario, usuarioLogado));
 		Funcionario result =  dao.save(funcionario);
 		
