@@ -43,7 +43,11 @@ public class Util {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(Util.toCammelCase("MONIQUE luiza santana rego DantAs "));
+		try {
+			System.out.println(Util.getMD5String("mon2812"));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String getNumeroFormatado(int numero, String formato) {

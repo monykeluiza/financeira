@@ -133,8 +133,18 @@ public class DashboardMB implements Serializable {
 		totalContratosAndamento = 0;
 		for (Contrato contrato : listaContratos) {
 			if (contrato.getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO)) {
+				if (mesPesquisa == null) {
+					if (Util.getYearFromDate(contrato.getDataCriacao())>=anoPesquisa) {
 						totalContratosAndamento++;
 						valorTotalContratosAndamento = valorTotalContratosAndamento.add(contrato.getValorContrato());
+					}
+				} else {
+					if (Util.getYearFromDate(contrato.getDataCriacao())>=anoPesquisa && 
+							Util.getMonthFromDate(contrato.getDataCriacao())<=mesPesquisa) {
+						totalContratosAndamento++;
+						valorTotalContratosAndamento = valorTotalContratosAndamento.add(contrato.getValorContrato());
+					}
+				}
 			}
 		}
 		totalContratosCancelados = 0;
@@ -172,12 +182,12 @@ public class DashboardMB implements Serializable {
 							totalValorDigitado = totalValorDigitado.add(contrato.getValorContrato());
 							if (contrato.getValorPago() != null) {
 								totalValorPago = totalValorPago.add(contrato.getValorPago());
-							}
+							} 
 						}
 					} else {
 						if (contrato.getUltimoStatus().getId().equals(StatusContrato.ANDAMENTO) && 
 								Util.getYearFromDate(contrato.getDataCriacao())>=anoPesquisa && 
-								Util.getMonthFromDate(contrato.getDataCriacao())>=mesPesquisa) {
+								Util.getMonthFromDate(contrato.getDataCriacao())<=mesPesquisa) {
 							totalValorDigitado = totalValorDigitado.add(contrato.getValorContrato());
 						}
 						if (contrato.getValorPago() != null) {
