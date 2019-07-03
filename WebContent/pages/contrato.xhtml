@@ -39,6 +39,11 @@
 						sortBy="#{contrato.clienteId.nome}">
 						<h:outputText value=" #{contrato.clienteId.nome}" />
 					</p:column>
+					<p:column headerText="Número" filterMatchMode="contains"
+						filterBy="#{contrato.numero}"
+						sortBy="#{contrato.numero}">
+						<h:outputText value="#{contrato.numero}" />
+					</p:column>
 					<p:column headerText="Valor Cliente"
 						sortBy="#{contrato.valorCliente}">
 						<h:outputText value="#{contrato.valorCliente}">
@@ -56,7 +61,7 @@
 							<f:convertNumber type="currency" />
 						</h:outputText>
 					</p:column>
-					<p:column headerText="Data" sortBy="#{contrato.dataCriacao}">
+					<p:column headerText="Data Dig." sortBy="#{contrato.dataCriacao}">
 						<h:outputText value="#{contrato.dataCriacao}">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</h:outputText>
@@ -69,7 +74,7 @@
 					<p:column headerText="Qtd.Parcelas">
 						<h:outputText value="#{contrato.qtdParcelas}" />
 					</p:column>
-					<p:column headerText="Tipo Operacao">
+					<p:column headerText="Operacao">
 						<h:outputText value="#{contrato.tipoOperacaoId.nome}" />
 					</p:column>
 					<p:column headerText="Banco">

@@ -176,7 +176,8 @@ public class DashboardMB implements Serializable {
 				consolidado.setListaContratos(funcionario.getContratoList());
 				BigDecimal totalValorDigitado = new BigDecimal(0);
 				BigDecimal totalValorPago = new BigDecimal(0);
-				for (Contrato contrato : funcionario.getContratoList()) {
+				List<Contrato> contratos = contratoService.findByFuncionario(funcionario);
+				for (Contrato contrato : contratos) {
 					if (mesPesquisa == null) {
 						if (Util.getYearFromDate(contrato.getDataCriacao()).equals(anoPesquisa) && !contrato.getUltimoStatus().getId().equals(StatusContrato.CANCELADO)) {
 							totalValorDigitado = totalValorDigitado.add(contrato.getValorContrato());
