@@ -113,6 +113,7 @@ public class ContratoMB implements Serializable {
 	public void limparSetandoCliente(Cliente cliente) {
 		limpar();
 		contrato.setClienteId(cliente);
+		contrato.setFuncionarioId(cliente.getFuncionarioId());
 	}
 	
 	public void updateStatusPago() {

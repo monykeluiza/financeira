@@ -51,6 +51,14 @@ import br.com.financeira.utils.Util;
     @NamedQuery(name = "Cliente.findByEndereco", query = "SELECT c FROM Cliente c WHERE c.endereco = :endereco"),
     @NamedQuery(name = "Cliente.findBySiape", query = "SELECT c FROM Cliente c WHERE c.siape = :siape"),
     @NamedQuery(name = "Cliente.findByRg", query = "SELECT c FROM Cliente c WHERE c.rg = :rg"),
+    @NamedQuery(name = "Cliente.findByFilter", query = "SELECT c FROM Cliente c where (:nome is null or upper(c.nome) like :nome) "
+    		    		+ "AND (:cpf is null or c.cpf = :cpf) "
+    		    		+ "AND (:rg is null or c.rg = :rg) "
+    		    		+ "AND (:beneficio is null or c.beneficio = :beneficio) "
+    		    		+ "AND (:siape is null or c.siape = :siape) "
+    		    		+ "AND (:orgao is null or upper(c.orgao) like :orgao) "
+    		    		+ "AND (:idFuncionario is null or c.funcionarioId.id = :idFuncionario) order by c.nome"
+    		),
     @NamedQuery(name = "Cliente.findByOrgao", query = "SELECT c FROM Cliente c WHERE c.orgao = :orgao")})
 public class Cliente implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -61,7 +69,6 @@ public class Cliente implements Serializable {
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 250)
     @Column(name = "nome")
     private String nome;
     @Size(max = 15)
@@ -102,7 +109,7 @@ public class Cliente implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteId")
     private List<Contato> contatoList;
     @Column(name = "beneficio")
-    private Integer beneficio;
+    private String beneficio;
     @Transient
     private String rowStyleClass;
 
@@ -225,6 +232,9 @@ public class Cliente implements Serializable {
     }
 
     public Funcionario getFuncionarioId() {
+    	if (funcionarioId == null) {
+    		funcionarioId = new Funcionario();
+    	}
         return funcionarioId;
     }
 
@@ -266,11 +276,11 @@ public class Cliente implements Serializable {
         return "entidades_financeira.Cliente[ id=" + id + " ]";
     }
 
-	public Integer getBeneficio() {
+	public String getBeneficio() {
 		return beneficio;
 	}
 
-	public void setBeneficio(Integer beneficio) {
+	public void setBeneficio(String beneficio) {
 		this.beneficio = beneficio;
 	}
 

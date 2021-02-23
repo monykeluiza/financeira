@@ -19,4 +19,8 @@ public interface IClienteDao {
 	
 	public List<Cliente> findByAniversariantes();
 	
+	public Cliente findByCpf(Cliente cliente);
+	
+	public List<Cliente> findByFilter(Cliente cliente);
+	
 }

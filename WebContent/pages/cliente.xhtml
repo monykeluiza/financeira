@@ -27,12 +27,42 @@
 			}
 		</style>
 		<h:form id="clientepesqform">
+			<h:panelGrid columns="2">
+			<p:fieldset legend="Pesquisa" toggleable="true" collapsed="true"  style="width: 50%;">
+				<h:panelGrid cellpadding="5" columns="8">
+					<p:outputLabel value="Nome:"/>
+					<p:inputText value="#{clienteMb.clientePesquisa.nome}" />
+					<p:outputLabel value="CPF:"/>
+					<p:inputText value="#{clienteMb.clientePesquisa.cpf}" />
+					<p:outputLabel value="RG: "/>
+					<p:inputText value="#{clienteMb.clientePesquisa.rg}" />
+					<p:outputLabel value="Benefício: "/>
+					<p:inputText value="#{clienteMb.clientePesquisa.beneficio}" />
+					<p:outputLabel value="SIAPE: "/>
+					<p:inputText value="#{clienteMb.clientePesquisa.siape}" />
+					<p:outputLabel value="Órgão: "/>
+					<p:inputText value="#{clienteMb.clientePesquisa.orgao}" />
+					<p:outputLabel value="Responsável: "/>
+					<p:inputText value="#{clienteMb.clientePesquisa.funcionarioId.id}" />
+						<p:commandButton value="Pesquisar" 
+							icon="ui-icon-search" title="Pesquisar clientes"
+							update="grid clientepesqform"
+							actionListener="#{clienteMb.pesquisar}" />
+				</h:panelGrid>
+			</p:fieldset>
+			<p:commandButton value="Novo Cliente" icon="fa fa fa-plus"
+					title="Cadastrar novo cliente"
+					oncomplete="PF('clienteDialog').show();" update="clienteDialog"
+					actionListener="#{clienteMb.limpar}" />
+			</h:panelGrid>
+		
+		
 			<p:growl id="msg" redisplay="false" autoUpdate="true" />
 			<h:panelGrid cellpadding="10">
 				<p:dataTable var="cliente" value="#{clienteMb.listaClientes}"
 					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15"
-					paginator="true" rows="15" id="grid" widgetVar="grid"
+					paginator="true" rows="10" id="grid" widgetVar="grid"
 					emptyMessage="Nenhum registro cadastrado." >
 					<p:column style="width:16px" >
 						<p:rowToggler rendered="#{cliente.contratoList.size() > 0 or cliente.contatoList.size()>0}" />
@@ -207,7 +237,7 @@
 		</p:dialog>
 
 
-		<p:dialog id="clienteDialog" widgetVar="clienteDialog"
+		<p:dialog id="clienteDialog" widgetVar="clienteDialog" 
 			header="Cadastrar novo cliente" modal="true" appendTo="@(body)">
 			<h:form id="clientecadastroform">
 				<h:panelGrid columns="2" id="comum" width="250" cellpadding="3"
@@ -220,34 +250,42 @@
 					<p:inputMask mask="999.999.999-99" required="true"
 						requiredMessage="O campo CPF é de preenchimento obrigatório!"
 						value="#{clienteMb.cliente.cpf}" />
+					<p:outputLabel>Benefício:</p:outputLabel>
+					<p:inputText 
+						value="#{clienteMb.cliente.beneficio}" />
+					<p:outputLabel>Telefone(s):</p:outputLabel>
+					<p:inputText value="#{clienteMb.cliente.telefones}" />
+					<p:outputLabel>Data de Nascimento:</p:outputLabel>
+					<p:calendar value="#{clienteMb.cliente.dataNasc}" navigator="true"
+						mask="true" pattern="dd/MM/yyyy" />						
 					<p:outputLabel>RG:</p:outputLabel>
 					<p:inputText size="50" maxlength="600"
 						value="#{clienteMb.cliente.rg}" />
 					<p:outputLabel>SIAPE:</p:outputLabel>
 					<p:inputText size="50" maxlength="600"
 						value="#{clienteMb.cliente.siape}" />
-					<p:outputLabel>Benefício:</p:outputLabel>
-					<p:inputText 
-						value="#{clienteMb.cliente.beneficio}" />
 					<p:outputLabel>Órgão:</p:outputLabel>
 					<p:inputText size="50" maxlength="600"
 						value="#{clienteMb.cliente.orgao}" />
 					<p:outputLabel>E-mail:</p:outputLabel>
 					<p:inputText size="50" maxlength="600"
 						value="#{clienteMb.cliente.email}" />
-					<p:outputLabel>Telefone(s):</p:outputLabel>
-					<p:inputText value="#{clienteMb.cliente.telefones}" required="true"
-						requiredMessage="O campo Telefone é de preenchimento obrigatório!" />
 					<p:outputLabel>Whatsapp:</p:outputLabel>
 					<p:inputMask mask="(99) 9 9999-9999"
 						value="#{clienteMb.cliente.whatsapp}" />
 					<p:outputLabel>Endereço:</p:outputLabel>
 					<p:inputText size="50" maxlength="600"
 						value="#{clienteMb.cliente.endereco}" />
-					<p:outputLabel>Data de Nascimento:</p:outputLabel>
-					<p:calendar value="#{clienteMb.cliente.dataNasc}" navigator="true"
-						mask="true" pattern="dd/MM/yyyy" required="true"
-						requiredMessage="O campo Data de Nascimento é de preechimento obrigatório." />
+					<p:outputLabel>Responsável:</p:outputLabel>
+					<p:selectOneMenu value="#{clienteMb.cliente.funcionarioId.id}"
+						filter="true" filterMatchMode="contains" effect="fade"
+						disabled="#{clienteMb.isFuncionario}">
+						<f:selectItem itemLabel="Selecione..." itemValue="#{null}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{funcionarioMb.listaFuncionarios}"
+							var="item" itemValue="#{item.id}"
+							itemLabel="#{item.nome} - #{item.cpf}" />
+					</p:selectOneMenu>
 				</h:panelGrid>
 				<p:commandButton style="float:right;" process="@form"
 					value="Cadastrar" icon="ui-icon-circle-check"

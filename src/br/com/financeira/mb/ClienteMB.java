@@ -28,6 +28,8 @@ public class ClienteMB implements Serializable {
 	
 	private Cliente cliente;
 	
+	private Cliente clientePesquisa;
+	
 	private Usuario usuarioLogado;
 	
 	@Inject
@@ -35,6 +37,8 @@ public class ClienteMB implements Serializable {
 	
 	@Inject
 	private ContratoService contratoService;
+	
+	private boolean isFuncionario;
 	
 	@PostConstruct
 	public void init() {
@@ -45,7 +49,11 @@ public class ClienteMB implements Serializable {
 			}
 			listaClientes = new ArrayList<Cliente>();
 			cliente = new Cliente();
+			clientePesquisa = new Cliente();
 			carregarLista();
+			if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_FUNCIONARIO)) {
+				isFuncionario = true;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,12 +72,20 @@ public class ClienteMB implements Serializable {
 		}
 	}
 	
+	public void pesquisar() {
+		listaClientes = service.findByFilter(clientePesquisa);
+	}
+	
 	public void saveOrUpdate() {
 		try {
 			if (cliente.getId() == null) {
-				cliente = service.save(cliente, usuarioLogado);
-				JsfUtil.addSuccessMessage("Cliente cadastrado com sucesso.");
-				carregarLista();
+				if (!service.verificaClienteExiste(cliente)) {
+					cliente = service.save(cliente, usuarioLogado);
+					JsfUtil.addSuccessMessage("Cliente cadastrado com sucesso.");
+					carregarLista();
+				} else {
+					JsfUtil.addErrorMessage("Já existe cliente cadastrado com esse CPF.");
+				}
 			} else {
 				cliente = service.update(cliente, usuarioLogado);
 				JsfUtil.addSuccessMessage("Cliente atualizado com sucesso.");
@@ -90,10 +106,18 @@ public class ClienteMB implements Serializable {
 	
 	public void prepararEditar(Cliente cliente) {
 		this.cliente = cliente;
+		if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_FUNCIONARIO)) {
+			cliente.setFuncionarioId(usuarioLogado.getFuncionarioList().get(0));
+			isFuncionario = true;
+		}
 	}
 	
 	public void limpar() {
 		cliente = new Cliente();
+		if (usuarioLogado.getPerfilId().getId().equals(Perfil.PERFIL_FUNCIONARIO)) {
+			cliente.setFuncionarioId(usuarioLogado.getFuncionarioList().get(0));
+			isFuncionario = true;
+		}
 	}
 
 	public List<Cliente> getListaClientes() {
@@ -118,6 +142,22 @@ public class ClienteMB implements Serializable {
 
 	public void setUsuarioLogado(Usuario usuarioLogado) {
 		this.usuarioLogado = usuarioLogado;
+	}
+
+	public boolean getIsFuncionario() {
+		return isFuncionario;
+	}
+
+	public void setFuncionario(boolean isFuncionario) {
+		this.isFuncionario = isFuncionario;
+	}
+
+	public Cliente getClientePesquisa() {
+		return clientePesquisa;
+	}
+
+	public void setClientePesquisa(Cliente clientePesquisa) {
+		this.clientePesquisa = clientePesquisa;
 	}
 
 }

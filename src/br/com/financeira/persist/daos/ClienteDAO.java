@@ -67,4 +67,26 @@ public class ClienteDAO extends DataAccess<Cliente>  implements IClienteDao{
 		return super.findWithNamedQuery("Cliente.findByDataNasc", parametros);
 	}
 
+	@Override
+	public Cliente findByCpf(Cliente cliente) {
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("cpf", cliente.getCpf());
+		return (Cliente) super.findWithNamedQueryUniqueOrNull("Cliente.findByCpf", parametros);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Cliente> findByFilter(Cliente cliente) {
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("nome", cliente.getNome().toUpperCase() + "%");
+		parametros.put("cpf", cliente.getCpf());
+		parametros.put("rg", cliente.getRg());
+		parametros.put("beneficio", cliente.getBeneficio());
+		parametros.put("siape", cliente.getSiape());
+		parametros.put("orgao", "%" + cliente.getOrgao().toUpperCase() + "%");
+		parametros.put("idFuncionario", cliente.getFuncionarioId().getId());
+		return super.findWithNamedQuery("Cliente.findByFilter",parametros);
+	}
+	
+
 }

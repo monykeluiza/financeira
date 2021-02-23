@@ -23,8 +23,10 @@ public class ClienteService extends LogService {
 	private IUsuario usuarioDao;
 	
 	public Cliente save(Cliente cliente, Usuario usuarioLogado) {
-		Usuario u = usuarioDao.findById(usuarioLogado);
-		cliente.setFuncionarioId(u.getFuncionarioList().get(0));
+		if (cliente.getFuncionarioId() == null || cliente.getFuncionarioId().getId() == null) {
+			Usuario u = usuarioDao.findById(usuarioLogado);
+			cliente.setFuncionarioId(u.getFuncionarioList().get(0));
+		}
 		Cliente result =  dao.save(cliente);
 		Log log = createLog(ACAO_INSERT, result.getId(), usuarioLogado, "Cliente");
 		salvar(log);
@@ -50,6 +52,15 @@ public class ClienteService extends LogService {
 		return result;
 	}
 	
+	public boolean verificaClienteExiste(Cliente cliente) {
+		Cliente cli = dao.findByCpf(cliente);
+		if (cli != null && cli.getId() != null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 	public List<Cliente> findByFuncionario(Funcionario funcionario) {
 		return dao.findByFuncionario(funcionario);
 	}
@@ -60,6 +71,10 @@ public class ClienteService extends LogService {
 	
 	public List<Cliente> findByAniversariantes() {
 		return dao.findByAniversariantes();
+	}
+	
+	public List<Cliente> findByFilter(Cliente cliente) {
+		return dao.findByFilter(cliente);
 	}
 
 	

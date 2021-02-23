@@ -407,3 +407,5 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 alter table tipo_operacao add ativo boolean default 1;
 
+alter table cliente modify column beneficio varchar(50) null;
+
